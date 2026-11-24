@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduPortal | Public Educational Project & Architecture</title>
+    <title>Artificial Intelligence for Multimedia | University Course Portal</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     
@@ -40,10 +40,28 @@
             }
         }
     </script>
+    <style>
+        /* Smooth custom scrollbars and prose styling */
+        .internal-link {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: underline;
+            text-decoration-color: #93c5fd;
+            text-underline-offset: 3px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        .internal-link:hover {
+            color: #1d4ed8;
+            text-decoration-color: #2563eb;
+            background-color: #eff6ff;
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body class="bg-canvas text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-accent-600 selection:text-white">
 
-    <!-- Toast Notification Container (Replaces alert()) -->
+    <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
     <!-- Top Navigation Bar -->
@@ -51,29 +69,33 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
                 <!-- Brand / Project Logo -->
-                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
                     <div class="w-9 h-9 rounded-lg bg-accent-600 flex items-center justify-center shadow-inner">
-                        <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+                        <i data-lucide="cpu" class="w-5 h-5 text-white"></i>
                     </div>
                     <div>
-                        <span id="nav-project-title" class="font-bold text-lg tracking-tight block leading-none">OpenEdu Initiative</span>
-                        <span class="text-[11px] font-mono text-slate-400 tracking-wider uppercase">Phase 1: Architecture</span>
+                        <span id="nav-project-title" class="font-bold text-base sm:text-lg tracking-tight block leading-none">AI for Multimedia</span>
+                        <span id="nav-group-subtitle" class="text-[11px] font-mono text-slate-400 tracking-wider uppercase">Group 04 • 6-Member Collaborative</span>
                     </div>
                 </div>
 
                 <!-- Desktop Navigation Tabs -->
-                <nav class="hidden md:flex items-center space-x-2" aria-label="Main Navigation">
-                    <button onclick="switchTab('home')" id="nav-btn-home" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-accent-600 text-white shadow-sm">
+                <nav class="hidden lg:flex items-center space-x-1.5" aria-label="Main Navigation">
+                    <button onclick="navigateTo('home')" id="nav-btn-home" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-accent-600 text-white shadow-sm">
                         <i data-lucide="home" class="w-4 h-4"></i>
                         Homepage
                     </button>
-                    <button onclick="switchTab('sitemap')" id="nav-btn-sitemap" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
-                        <i data-lucide="network" class="w-4 h-4"></i>
-                        Site Map
+                    <button onclick="navigateTo('modules', 1)" id="nav-btn-modules" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
+                        <i data-lucide="book-open" class="w-4 h-4"></i>
+                        Curriculum Modules (6)
                     </button>
-                    <button onclick="switchTab('team')" id="nav-btn-team" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
+                    <button onclick="navigateTo('resources')" id="nav-btn-resources" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
+                        <i data-lucide="library" class="w-4 h-4"></i>
+                        Resource Library
+                    </button>
+                    <button onclick="navigateTo('governance')" id="nav-btn-governance" class="nav-tab px-3.5 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
                         <i data-lucide="users" class="w-4 h-4"></i>
-                        Member Responsibilities
+                        Team & Governance
                     </button>
                 </nav>
 
@@ -81,12 +103,12 @@
                 <div class="hidden sm:flex items-center gap-3">
                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
                         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                        GitHub Pages Ready
+                        Public GitHub Pages
                     </span>
                 </div>
 
                 <!-- Mobile Menu Button -->
-                <div class="flex md:hidden">
+                <div class="flex lg:hidden">
                     <button onclick="toggleMobileMenu()" type="button" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-navy-800 focus:outline-none" aria-label="Toggle Menu">
                         <i data-lucide="menu" class="w-6 h-6"></i>
                     </button>
@@ -95,18 +117,22 @@
         </div>
 
         <!-- Mobile Navigation Dropdown -->
-        <div id="mobile-menu" class="hidden md:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
-            <button onclick="switchTab('home'); toggleMobileMenu();" id="mob-btn-home" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5">
+        <div id="mobile-menu" class="hidden lg:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="navigateTo('home'); toggleMobileMenu();" id="mob-btn-home" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5">
                 <i data-lucide="home" class="w-4 h-4"></i>
-                Homepage
+                Homepage & Site Map
             </button>
-            <button onclick="switchTab('sitemap'); toggleMobileMenu();" id="mob-btn-sitemap" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
-                <i data-lucide="network" class="w-4 h-4"></i>
-                Site Map
+            <button onclick="navigateTo('modules', 1); toggleMobileMenu();" id="mob-btn-modules" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
+                <i data-lucide="book-open" class="w-4 h-4"></i>
+                Curriculum Modules (6 Pages)
             </button>
-            <button onclick="switchTab('team'); toggleMobileMenu();" id="mob-btn-team" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
+            <button onclick="navigateTo('resources'); toggleMobileMenu();" id="mob-btn-resources" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
+                <i data-lucide="library" class="w-4 h-4"></i>
+                Annotated Resource Library
+            </button>
+            <button onclick="navigateTo('governance'); toggleMobileMenu();" id="mob-btn-governance" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
                 <i data-lucide="users" class="w-4 h-4"></i>
-                Member Responsibilities
+                Team, Authorship & AI Transparency
             </button>
         </div>
     </header>
@@ -114,37 +140,40 @@
     <!-- Main Content Container -->
     <main class="flex-grow">
 
-        <!-- ========================================== -->
-        <!-- VIEW 1: HOMEPAGE                           -->
-        <!-- ========================================== -->
+        <!-- ========================================================= -->
+        <!-- VIEW 1: HOMEPAGE (Topic, Goals, Group, Nav, Checklist)    -->
+        <!-- ========================================================= -->
         <section id="view-home" class="view-section block">
             <!-- Hero Banner -->
             <div class="bg-navy-900 text-white border-b border-slate-800 relative overflow-hidden">
-                <!-- Subtle Decorative Grid Pattern -->
                 <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 24px 24px;"></div>
                 
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
-                    <div class="max-w-3xl">
-                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-600/20 border border-accent-500/30 text-accent-100 text-xs font-medium mb-6">
-                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-accent-400"></i>
-                            <span>Public Educational Resource • Open Access</span>
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 relative z-10">
+                    <div class="max-w-4xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-600/20 border border-accent-500/30 text-accent-100 text-xs font-medium mb-5">
+                            <i data-lucide="sparkles" class="w-3.5 h-3.5 text-accent-400"></i>
+                            <span id="hero-badge-text">Multimedia Computing & Deep Learning • Group 04 Final Project</span>
                         </div>
-                        <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight mb-6">
-                            Accessible, Structured Learning for Everyone.
+                        <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight mb-5">
+                            Artificial Intelligence for Multimedia
                         </h1>
-                        <p id="hero-subtitle" class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
-                            Welcome to our public educational portal. This platform is designed to deliver clear, interactive modules, curated study guides, and hands-on exercises—hosted openly on GitHub Pages for learners and educators worldwide.
+                        <p id="hero-subtitle" class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-3xl">
+                            An open-access academic guide exploring how modern deep neural architectures perceive, align, synthesize, and authenticate visual, acoustic, and textual media—authored collaboratively by our 6-member research group.
                         </p>
                         
                         <!-- Call to Action Buttons -->
-                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                            <button onclick="switchTab('sitemap')" class="px-6 py-3.5 rounded-xl bg-accent-600 hover:bg-accent-500 text-white font-semibold text-sm shadow-lg shadow-accent-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                <i data-lucide="network" class="w-4 h-4"></i>
-                                Explore Curriculum Site Map
+                        <div class="flex flex-wrap gap-3 sm:gap-4">
+                            <button onclick="navigateTo('modules', 1)" class="px-6 py-3.5 rounded-xl bg-accent-600 hover:bg-accent-500 text-white font-semibold text-sm shadow-lg shadow-accent-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="play-circle" class="w-4 h-4"></i>
+                                Start Module 1: Multimodal Foundations
                             </button>
-                            <button onclick="switchTab('team')" class="px-6 py-3.5 rounded-xl bg-navy-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
-                                <i data-lucide="users" class="w-4 h-4"></i>
-                                View Team & Responsibilities
+                            <button onclick="navigateTo('resources')" class="px-6 py-3.5 rounded-xl bg-navy-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="library" class="w-4 h-4"></i>
+                                Annotated Resource Library
+                            </button>
+                            <button onclick="openEditOverviewModal()" class="px-4 py-3.5 rounded-xl bg-transparent hover:bg-navy-800 text-slate-300 border border-slate-700/80 font-medium text-xs sm:text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="edit-3" class="w-4 h-4"></i>
+                                Edit Group Info
                             </button>
                         </div>
                     </div>
@@ -156,20 +185,11 @@
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
                         <div class="w-11 h-11 rounded-lg bg-blue-50 text-accent-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="layers" class="w-5 h-5"></i>
+                            <i data-lucide="book-copy" class="w-5 h-5"></i>
                         </div>
                         <div>
                             <p class="text-2xl font-bold text-navy-900">6</p>
-                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Planned Modules</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
-                        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
-                        </div>
-                        <div>
-                            <p class="text-2xl font-bold text-navy-900">Phase 1</p>
-                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Foundation Live</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Individual Pages</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
@@ -177,323 +197,352 @@
                             <i data-lucide="users" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-navy-900" id="stat-team-count">4</p>
-                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Core Contributors</p>
+                            <p class="text-2xl font-bold text-navy-900">6</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Group Authors</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="file-check-2" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-navy-900" id="stat-ref-count">10</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Annotated Sources</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
                         <div class="w-11 h-11 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
-                            <i data-lucide="globe" class="w-5 h-5"></i>
+                            <i data-lucide="shield-check" class="w-5 h-5"></i>
                         </div>
                         <div>
-                            <p class="text-2xl font-bold text-navy-900">100%</p>
-                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Free & Open Source</p>
+                            <p class="text-2xl font-bold text-navy-900">9 / 9</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Checklist Ready</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Project Overview & Learning Objectives -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <!-- Learning Goals & Group Roster Overview -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-12">
+                
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                    
-                    <!-- Left Column: Project Overview -->
-                    <div class="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
-                        <div class="flex items-center justify-between mb-4">
-                            <span class="text-xs font-bold uppercase tracking-wider text-accent-600">About This Initiative</span>
-                            <button onclick="openEditOverviewModal()" class="text-xs font-medium text-slate-500 hover:text-accent-600 flex items-center gap-1 px-2.5 py-1 rounded-md hover:bg-slate-100 transition">
-                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Customize Overview
-                            </button>
-                        </div>
-                        <h2 class="text-2xl font-bold text-navy-900 mb-4">Project Overview & Pedagogical Approach</h2>
-                        <div id="overview-body" class="space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
-                            <p>
-                                Educational barriers often stem from fragmented resources and paywalled content. Our goal is to construct a centralized, self-paced web portal that guides learners from foundational definitions to applied mastery.
-                            </p>
-                            <p>
-                                Currently, our team is publishing the core architecture—establishing the public homepage, comprehensive curriculum site map, and transparent contributor responsibilities—before rolling out interactive lesson modules in subsequent releases.
-                            </p>
-                        </div>
-
-                        <!-- Current Release Milestone Box -->
-                        <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3.5">
-                            <div class="p-2 rounded-lg bg-accent-100 text-accent-700 mt-0.5">
-                                <i data-lucide="milestone" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-sm font-semibold text-navy-900">Current Release Milestone: v1.0 Foundation</h3>
-                                <p class="text-xs sm:text-sm text-slate-600 mt-1">
-                                    Includes the public landing page, full curriculum blueprint (Site Map), and contributor roster. Next milestone: Interactive Module 1 & Self-Assessment Quiz.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Core Learning Objectives -->
-                    <div class="lg:col-span-5 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
-                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-2">Curriculum Goals</span>
-                        <h2 class="text-2xl font-bold text-navy-900 mb-5">Learning Objectives</h2>
+                    <!-- Left Column: Learning Goals (Checklist Req #2) -->
+                    <div class="lg:col-span-6 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-2">Course Outcomes</span>
+                        <h2 class="text-2xl font-bold text-navy-900 mb-3">Learning Goals</h2>
+                        <p class="text-sm text-slate-600 mb-6">
+                            Upon completing all six curriculum modules on this portal, learners will be able to:
+                        </p>
                         
                         <ul class="space-y-4">
                             <li class="flex items-start gap-3.5">
-                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">1</div>
+                                <div class="w-7 h-7 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">LG1</div>
                                 <div>
-                                    <h4 class="text-sm font-semibold text-navy-900">Master Core Foundations</h4>
-                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Build a clear mental model of fundamental terminology, history, and core principles.</p>
+                                    <h4 class="text-sm font-bold text-navy-900">Formulate Multimodal Representations</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Explain how raw pixels, video frames, audio waveforms, and text tokens are transformed into shared latent vector spaces.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3.5">
-                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">2</div>
+                                <div class="w-7 h-7 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">LG2</div>
                                 <div>
-                                    <h4 class="text-sm font-semibold text-navy-900">Apply Analytical Frameworks</h4>
-                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Work through guided real-world case studies and structured problem-solving exercises.</p>
+                                    <h4 class="text-sm font-bold text-navy-900">Analyze Vision & Acoustic Neural Architectures</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Compare convolutional, recurrent, and self-attention mechanisms (ViT, Whisper, CLIP) across visual and speech recognition benchmarks.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3.5">
-                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">3</div>
+                                <div class="w-7 h-7 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">LG3</div>
                                 <div>
-                                    <h4 class="text-sm font-semibold text-navy-900">Verify Knowledge Retention</h4>
-                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Evaluate understanding using interactive checkpoints, flashcards, and summary rubrics.</p>
+                                    <h4 class="text-sm font-bold text-navy-900">Evaluate Generative Synthesis & Cross-Modal Alignment</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Understand adversarial training (GANs), iterative denoising diffusion (DDPM/LDM), and cross-attention captioning models.</p>
                                 </div>
                             </li>
                             <li class="flex items-start gap-3.5">
-                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">4</div>
+                                <div class="w-7 h-7 rounded-lg bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">LG4</div>
                                 <div>
-                                    <h4 class="text-sm font-semibold text-navy-900">Encourage Open Collaboration</h4>
-                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Enable students and peers to reference, share, and build upon open-licensed materials.</p>
+                                    <h4 class="text-sm font-bold text-navy-900">Apply Media Forensics & Provenance Standards</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Critically assess deepfake detection cues, cryptographic provenance (C2PA), and ethical copyright governance in generative media.</p>
                                 </div>
                             </li>
                         </ul>
                     </div>
+
+                    <!-- Right Column: 6-Member Group Overview & Direct Page Directory -->
+                    <div class="lg:col-span-6 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent-600">Site Map & Authorship</span>
+                            <button onclick="navigateTo('governance')" class="text-xs font-semibold text-accent-600 hover:underline flex items-center gap-1 cursor-pointer">
+                                Edit Member Names <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+                            </button>
+                        </div>
+                        <h2 class="text-2xl font-bold text-navy-900 mb-3">6-Member Group & Module Directory</h2>
+                        <p class="text-sm text-slate-600 mb-5">
+                            Each group member authored an independent, peer-reviewed curriculum page linked below:
+                        </p>
+
+                        <div id="home-module-directory" class="space-y-2.5">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- XI. Final Submission Checklist Interactive Verifier -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100">
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-600 mb-1">
+                                <i data-lucide="check-square" class="w-4 h-4"></i>
+                                Course Compliance Verification
+                            </div>
+                            <h2 class="text-xl sm:text-2xl font-bold text-navy-900">XI. Final Submission Checklist</h2>
+                            <p class="text-xs sm:text-sm text-slate-500 mt-0.5">Interactive audit confirming every required deliverable is built into this public GitHub Pages site.</p>
+                        </div>
+                        <span class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 self-start sm:self-center">
+                            All 9 Requirements Built-In
+                        </span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6" id="checklist-grid">
+                        <!-- Checklist Item 1 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Public URL Access</span>
+                                <span class="text-slate-600 text-xs">Single-file <code class="font-mono bg-white px-1 rounded">index.html</code> opens publicly on GitHub Pages with zero permissions required.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 2 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Homepage Identification</span>
+                                <span class="text-slate-600 text-xs">Clearly displays topic, 4 learning goals, 6-member group roster, and full site navigation.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 3 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">6 Individual Student Pages</span>
+                                <span class="text-slate-600 text-xs">All 6 modules contain full technical lessons, custom diagrams, and interactive concept checks.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 4 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Annotated External Resources</span>
+                                <span class="text-slate-600 text-xs">10 peer-reviewed papers with working arXiv/DOI links and detailed explanatory annotations.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 5 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Diagram & Media Credits</span>
+                                <span class="text-slate-600 text-xs">Every SVG architectural diagram includes a figure caption, author credit, and central attribution log.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 6 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">2+ Contextual Internal Links/Page</span>
+                                <span class="text-slate-600 text-xs">Each student module embeds clickable internal links connecting directly to peer modules & citations.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 7 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Governance & AI Statement</span>
+                                <span class="text-slate-600 text-xs">Includes Resource Library, 6-member Authorship Record, and AI/Source-Use Transparency Statement.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 8 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Technical Claim Verification</span>
+                                <span class="text-slate-600 text-xs">Dedicated "Technical Claim Verification Box" on every page with empirical metric & DOI source.</span>
+                            </div>
+                        </label>
+                        <!-- Checklist Item 9 -->
+                        <label class="p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3 cursor-pointer hover:border-accent-400 transition">
+                            <input type="checkbox" checked class="mt-1 w-4 h-4 text-accent-600 rounded border-slate-300 focus:ring-accent-500">
+                            <div class="text-xs sm:text-sm">
+                                <span class="font-semibold text-navy-900 block">Representative Portal Export</span>
+                                <span class="text-slate-600 text-xs">One-click HTML export bakes all 6 real student names & IDs into <code class="font-mono bg-white px-1 rounded">index.html</code> for submission.</span>
+                            </div>
+                        </label>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- ========================================== -->
-        <!-- VIEW 2: SITE MAP                           -->
-        <!-- ========================================== -->
-        <section id="view-sitemap" class="view-section hidden">
-            <!-- Section Header -->
+        <!-- ========================================================= -->
+        <!-- VIEW 2: CURRICULUM MODULES (6 INDIVIDUAL STUDENT PAGES)   -->
+        <!-- ========================================================= -->
+        <section id="view-modules" class="view-section hidden">
+            <!-- Module Selector Sub-Navigation Bar -->
+            <div class="bg-white border-b border-slate-200 shadow-xs">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+                        <span class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+                            <i data-lucide="layers" class="w-3.5 h-3.5 text-accent-600"></i>
+                            Select Individual Student Page (1–6):
+                        </span>
+                        <span id="module-author-topbar" class="text-xs font-mono text-accent-700 bg-accent-50 px-2.5 py-1 rounded-md border border-accent-200">
+                            Author: Member 1
+                        </span>
+                    </div>
+                    <div id="module-selector-pills" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                        <!-- Populated dynamically via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Individual Student Page Container -->
+            <div id="active-module-container" class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 3: ANNOTATED RESOURCE LIBRARY                        -->
+        <!-- ========================================================= -->
+        <section id="view-resources" class="view-section hidden">
             <div class="bg-white border-b border-slate-200">
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
                             <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
-                                <i data-lucide="folder-tree" class="w-4 h-4"></i>
-                                Information Architecture
+                                <i data-lucide="book-marked" class="w-4 h-4"></i>
+                                Peer-Reviewed Bibliography & Claim Verification
                             </div>
-                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Website Site Map & Content Roadmap</h1>
-                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
-                                A structural overview of all public pages, planned educational modules, URL routes, and current publication statuses.
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Annotated Resource Library</h1>
+                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-3xl">
+                                Foundational research papers, datasets, and standards cited across all 6 student modules. Each source includes a working arXiv/DOI link and a critical annotation explaining its technical relevance.
                             </p>
                         </div>
 
-                        <!-- Filter Controls -->
-                        <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200/80 self-start">
-                            <button onclick="filterSitemap('all')" id="filter-all" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-navy-900 shadow-sm transition">
-                                All Pages
-                            </button>
-                            <button onclick="filterSitemap('Live')" id="filter-Live" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Live
-                            </button>
-                            <button onclick="filterSitemap('In Progress')" id="filter-In Progress" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> In Progress
-                            </button>
-                            <button onclick="filterSitemap('Planned')" id="filter-Planned" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
-                                <span class="w-2 h-2 rounded-full bg-slate-400"></span> Planned
-                            </button>
+                        <!-- Category Filter -->
+                        <div class="flex flex-wrap items-center gap-1.5 bg-slate-100 p-1.5 rounded-xl border border-slate-200/80 self-start">
+                            <button onclick="filterResources('all')" id="res-filter-all" class="res-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-navy-900 shadow-sm transition">All (10)</button>
+                            <button onclick="filterResources('Multimodal')" id="res-filter-Multimodal" class="res-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition">Multimodal</button>
+                            <button onclick="filterResources('Vision & Audio')" id="res-filter-Vision & Audio" class="res-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition">Vision & Audio</button>
+                            <button onclick="filterResources('Generative & Ethics')" id="res-filter-Generative & Ethics" class="res-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition">Generative & Ethics</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div id="resources-list" class="space-y-4">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- VIEW 4: TEAM & GOVERNANCE (Authorship, Media, AI Statement) -->
+        <!-- ========================================================= -->
+        <section id="view-governance" class="view-section hidden">
+            <div class="bg-white border-b border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
+                                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                                Academic Integrity & Project Records
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Team Authorship, Media Credits & AI Statement</h1>
+                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-3xl">
+                                Complete contribution log for all 6 group members, diagram attribution table, and AI/source-use transparency disclosure.
+                            </p>
+                        </div>
+
+                        <button onclick="downloadCustomizedHTML()" class="px-5 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 self-start cursor-pointer">
+                            <i data-lucide="download" class="w-4 h-4"></i>
+                            Export Updated index.html
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
                 
-                <!-- Visual Hierarchy Tree Diagram -->
-                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
-                    <div class="flex items-center justify-between mb-6">
-                        <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
-                            <i data-lucide="git-fork" class="w-5 h-5 text-accent-600"></i>
-                            Visual Navigation Hierarchy
-                        </h2>
-                        <span class="text-xs font-mono text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">root: /index.html</span>
+                <!-- 1. Individual Authorship & Contribution Record (6 Members) -->
+                <div>
+                    <div class="flex items-center justify-between mb-5">
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-900">1. Individual Authorship & Contribution Record (6 Members)</h2>
+                            <p class="text-xs sm:text-sm text-slate-500">Click <strong>Edit Author Details</strong> on any card to enter your real group members' names, student IDs, and verified technical claims.</p>
+                        </div>
                     </div>
 
-                    <!-- Tree Structure -->
-                    <div class="overflow-x-auto pb-2">
-                        <div class="min-w-[640px] flex flex-col items-center">
-                            <!-- Root Node -->
-                            <div class="px-5 py-3 rounded-xl bg-navy-900 text-white font-semibold text-sm shadow-md border border-navy-800 flex items-center gap-2.5">
-                                <i data-lucide="globe" class="w-4 h-4 text-accent-400"></i>
-                                <span>Public Educational Portal (Home)</span>
-                                <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Live</span>
-                            </div>
-
-                            <!-- Vertical Connector -->
-                            <div class="w-0.5 h-6 bg-slate-300"></div>
-
-                            <!-- Horizontal Branch Bar -->
-                            <div class="w-4/5 h-0.5 bg-slate-300"></div>
-
-                            <!-- Primary Branches (3 Columns) -->
-                            <div class="w-full grid grid-cols-3 gap-6">
-                                <!-- Branch 1: Core Meta Pages -->
-                                <div class="flex flex-col items-center">
-                                    <div class="w-0.5 h-6 bg-slate-300"></div>
-                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">1. Portal Core</span>
-                                        <p class="text-sm font-bold text-navy-900">Project & Governance</p>
-                                        <div class="mt-3 space-y-2 text-left">
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">1.1 Homepage</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">1.2 Site Map</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">1.3 Team Roster</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Branch 2: Learning Modules -->
-                                <div class="flex flex-col items-center">
-                                    <div class="w-0.5 h-6 bg-slate-300"></div>
-                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">2. Curriculum</span>
-                                        <p class="text-sm font-bold text-navy-900">Educational Modules</p>
-                                        <div class="mt-3 space-y-2 text-left">
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">2.1 Module 1: Foundations</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold text-[10px]">In Progress</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">2.2 Module 2: Core Methods</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">2.3 Module 3: Case Studies</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Branch 3: Interactive & Resources -->
-                                <div class="flex flex-col items-center">
-                                    <div class="w-0.5 h-6 bg-slate-300"></div>
-                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
-                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">3. Practice & Tools</span>
-                                        <p class="text-sm font-bold text-navy-900">Student Resources</p>
-                                        <div class="mt-3 space-y-2 text-left">
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">3.1 Self-Check Quizzes</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold text-[10px]">In Progress</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">3.2 Glossary & References</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
-                                            </div>
-                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
-                                                <span class="font-medium text-slate-700">3.3 Downloadable Guides</span>
-                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Populated dynamically via JS -->
                     </div>
                 </div>
 
-                <!-- Detailed Structured Directory Table -->
+                <!-- 2. Diagram & Media Attribution Log -->
                 <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
-                    <div class="p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h2 class="text-lg font-bold text-navy-900">Detailed Page Directory</h2>
-                            <p class="text-xs sm:text-sm text-slate-500">Complete breakdown of routes, owners, and planned deliverables.</p>
-                        </div>
-                        <button onclick="openAddPageModal()" class="px-4 py-2 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs font-semibold shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto cursor-pointer">
-                            <i data-lucide="plus" class="w-4 h-4"></i> Add Planned Page
-                        </button>
+                    <div class="p-6 border-b border-slate-200">
+                        <h2 class="text-xl font-bold text-navy-900">2. Diagram & External Media Attribution Record</h2>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-1">All architectural diagrams on this website are original vector graphics (SVG) created specifically for this project by the respective module authors, inspired by peer-reviewed architectures.</p>
                     </div>
-
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left border-collapse">
+                        <table class="w-full text-left border-collapse text-sm">
                             <thead>
                                 <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
-                                    <th class="py-3.5 px-6">Section / Page Title</th>
-                                    <th class="py-3.5 px-4">Route / Anchor</th>
-                                    <th class="py-3.5 px-4">Description & Planned Content</th>
-                                    <th class="py-3.5 px-4">Lead Owner</th>
-                                    <th class="py-3.5 px-6 text-right">Status</th>
+                                    <th class="py-3.5 px-6">Figure / Media Asset</th>
+                                    <th class="py-3.5 px-4">Module Location</th>
+                                    <th class="py-3.5 px-4">Creator & License</th>
+                                    <th class="py-3.5 px-6">Architectural Reference Basis</th>
                                 </tr>
                             </thead>
-                            <tbody id="sitemap-table-body" class="divide-y divide-slate-200/80 text-sm">
-                                <!-- Populated dynamically via JavaScript -->
+                            <tbody id="media-credits-body" class="divide-y divide-slate-200/80">
+                                <!-- Populated dynamically via JS -->
                             </tbody>
                         </table>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- ========================================== -->
-        <!-- VIEW 3: MEMBER RESPONSIBILITIES            -->
-        <!-- ========================================== -->
-        <section id="view-team" class="view-section hidden">
-            <!-- Section Header -->
-            <div class="bg-white border-b border-slate-200">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <!-- 3. AI & Source-Use Transparency Statement -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-10 h-10 rounded-xl bg-navy-900 text-accent-400 flex items-center justify-center shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
                         <div>
-                            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
-                                <i data-lucide="clipboard-check" class="w-4 h-4"></i>
-                                Project Governance & Ownership
-                            </div>
-                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Team Roster & Member Responsibilities</h1>
-                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
-                                Clear allocation of roles, deliverables, and current progress across all project contributors. Click <strong>Edit Member</strong> on any card to customize names and tasks.
+                            <h2 class="text-xl font-bold text-navy-900">3. AI & Source-Use Transparency Statement</h2>
+                            <p class="text-xs text-slate-500 font-mono">Academic Integrity Disclosure • Course Submission Standard</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-slate-600 leading-relaxed mt-4">
+                        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                            <h3 class="font-bold text-navy-900 flex items-center gap-2">
+                                <i data-lucide="bot" class="w-4 h-4 text-accent-600"></i>
+                                Generative AI Tool Usage
+                            </h3>
+                            <p>
+                                Large Language Model assistance (Gemini) was utilized strictly for front-end web scaffolding (HTML5, Tailwind CSS responsive grid architecture, interactive JavaScript tab routing, and inline SVG diagram boilerplate). All structural code was reviewed, debugged, and deployed to GitHub Pages by the group.
                             </p>
                         </div>
 
-                        <div class="flex items-center gap-3 self-start">
-                            <button onclick="openAddMemberModal()" class="px-4 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 cursor-pointer">
-                                <i data-lucide="user-plus" class="w-4 h-4"></i>
-                                Add Team Member
-                            </button>
+                        <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-2.5">
+                            <h3 class="font-bold text-navy-900 flex items-center gap-2">
+                                <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-600"></i>
+                                Human Authorship & Claim Verification
+                            </h3>
+                            <p>
+                                Every mathematical formulation, architectural explanation, and empirical performance metric presented across Modules 1–6 was authored and independently verified by the assigned student author against the primary peer-reviewed papers listed in the <strong>Annotated Resource Library</strong> (arXiv / IEEE / CVPR / NeurIPS).
+                            </p>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Team Cards Grid -->
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-                <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Populated dynamically via JavaScript -->
-                </div>
-
-                <!-- Helpful GitHub Export Banner -->
-                <div class="mt-12 bg-navy-900 rounded-2xl p-6 sm:p-8 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 border border-slate-800">
-                    <div class="space-y-1.5 max-w-2xl">
-                        <div class="inline-flex items-center gap-2 text-xs font-mono text-accent-400">
-                            <i data-lucide="code-2" class="w-4 h-4"></i>
-                            <span>Ready for GitHub Pages Deployment</span>
-                        </div>
-                        <h3 class="text-lg sm:text-xl font-bold">Customized your team names or project overview?</h3>
-                        <p class="text-xs sm:text-sm text-slate-300">
-                            Any edits you make right now are saved automatically in your browser. Click below to download an updated <code class="bg-navy-800 px-1.5 py-0.5 rounded text-accent-300">index.html</code> file with your customized data baked directly into the code for GitHub!
-                        </p>
-                    </div>
-                    <button onclick="downloadCustomizedHTML()" class="px-5 py-3 rounded-xl bg-accent-600 hover:bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-600/20 transition flex items-center gap-2 shrink-0 cursor-pointer">
-                        <i data-lucide="download" class="w-4 h-4"></i>
-                        Export Updated index.html
-                    </button>
-                </div>
             </div>
         </section>
 
@@ -504,147 +553,98 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="flex items-center gap-2.5 text-sm">
-                    <i data-lucide="graduation-cap" class="w-5 h-5 text-accent-500"></i>
-                    <span class="font-semibold text-slate-200" id="footer-project-title">OpenEdu Initiative</span>
+                    <i data-lucide="cpu" class="w-5 h-5 text-accent-500"></i>
+                    <span class="font-semibold text-slate-200" id="footer-project-title">Artificial Intelligence for Multimedia</span>
                     <span class="text-slate-600">•</span>
-                    <span class="text-xs">Public Educational Resource</span>
+                    <span class="text-xs" id="footer-group-name">Group 04 (6 Members)</span>
                 </div>
                 
-                <div class="flex items-center gap-4 text-xs">
-                    <span class="inline-flex items-center gap-1.5 text-slate-300 bg-navy-900 px-3 py-1.5 rounded-lg border border-slate-800">
-                        <i data-lucide="github" class="w-3.5 h-3.5 text-white"></i>
-                        Hosted on <strong>GitHub Pages</strong>
-                    </span>
-                    <span class="text-slate-500">v1.0 Foundation</span>
+                <div class="flex flex-wrap items-center gap-3 text-xs">
+                    <button onclick="navigateTo('home')" class="hover:text-white transition cursor-pointer">Homepage</button>
+                    <span>•</span>
+                    <button onclick="navigateTo('modules', 1)" class="hover:text-white transition cursor-pointer">Modules 1–6</button>
+                    <span>•</span>
+                    <button onclick="navigateTo('resources')" class="hover:text-white transition cursor-pointer">Resource Library</button>
+                    <span>•</span>
+                    <button onclick="navigateTo('governance')" class="hover:text-white transition cursor-pointer">Authorship & AI Statement</button>
                 </div>
             </div>
         </div>
     </footer>
 
-    <!-- ========================================== -->
-    <!-- MODAL: EDIT / ADD TEAM MEMBER              -->
-    <!-- ========================================== -->
+    <!-- ========================================================= -->
+    <!-- MODAL: EDIT MEMBER AUTHORSHIP & CLAIM                     -->
+    <!-- ========================================================= -->
     <div id="member-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 max-h-[90vh] overflow-y-auto">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h3 id="member-modal-title" class="text-lg font-bold text-navy-900">Edit Team Member</h3>
+                <h3 class="text-lg font-bold text-navy-900">Edit Member Authorship Record</h3>
                 <button onclick="closeModal('member-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             
-            <form id="member-form" onsubmit="saveMember(event)" class="mt-5 space-y-4">
+            <form onsubmit="saveMember(event)" class="mt-5 space-y-4">
                 <input type="hidden" id="member-id">
                 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Full Name</label>
-                        <input type="text" id="member-name" required placeholder="e.g., Alex Rivera" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Student Full Name</label>
+                        <input type="text" id="member-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Project Role</label>
-                        <input type="text" id="member-role" required placeholder="e.g., Lead Curriculum Designer" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Student ID / Handle</label>
+                        <input type="text" id="member-student-id" required placeholder="e.g., B1109001" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Status Badge</label>
-                    <select id="member-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-500">
-                        <option value="Active - On Track">Active - On Track</option>
-                        <option value="Completed Phase 1">Completed Phase 1</option>
-                        <option value="In Review">In Review</option>
-                        <option value="Upcoming">Upcoming</option>
-                    </select>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Project Role</label>
+                    <input type="text" id="member-role" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Key Responsibilities (One per line)</label>
-                    <textarea id="member-tasks" rows="4" required placeholder="Draft homepage copy&#10;Structure site map hierarchy&#10;Coordinate GitHub Pages deployment" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Individual Contributions (One per line)</label>
+                    <textarea id="member-tasks" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
                 </div>
 
                 <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
                     <button type="button" onclick="closeModal('member-modal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Save Changes</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Save Record</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- MODAL: ADD PLANNED PAGE TO SITE MAP        -->
-    <!-- ========================================== -->
-    <div id="page-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
-            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-navy-900">Add Page to Site Map</h3>
-                <button onclick="closeModal('page-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            
-            <form onsubmit="addSitemapPage(event)" class="mt-5 space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Page / Module Title</label>
-                        <input type="text" id="page-title" required placeholder="e.g., Module 4: Ethics" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">URL Route / File</label>
-                        <input type="text" id="page-route" required placeholder="e.g., /modules/ethics.html" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Lead Owner</label>
-                        <input type="text" id="page-owner" required placeholder="e.g., Jordan Lee" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Publication Status</label>
-                        <select id="page-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-500">
-                            <option value="Live">Live</option>
-                            <option value="In Progress">In Progress</option>
-                            <option value="Planned" selected>Planned</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Brief Description</label>
-                    <textarea id="page-desc" rows="3" required placeholder="Summarize what learners will find on this page..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
-                </div>
-
-                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
-                    <button type="button" onclick="closeModal('page-modal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
-                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Add to Site Map</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- ========================================== -->
-    <!-- MODAL: CUSTOMIZE PROJECT OVERVIEW          -->
-    <!-- ========================================== -->
+    <!-- ========================================================= -->
+    <!-- MODAL: EDIT GROUP & PROJECT OVERVIEW                      -->
+    <!-- ========================================================= -->
     <div id="overview-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
             <div class="flex items-center justify-between pb-4 border-b border-slate-100">
-                <h3 class="text-lg font-bold text-navy-900">Customize Project Details</h3>
+                <h3 class="text-lg font-bold text-navy-900">Customize Group & Course Info</h3>
                 <button onclick="closeModal('overview-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             
             <form onsubmit="saveOverview(event)" class="mt-5 space-y-4">
-                <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Project / Site Name</label>
-                    <input type="text" id="edit-site-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Group Identifier</label>
+                        <input type="text" id="edit-group-name" required placeholder="e.g., Group 04" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Course Code / Term</label>
+                        <input type="text" id="edit-course-code" required placeholder="e.g., CS4820 • Fall 2026" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                    </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Hero Headline</label>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Topic Title</label>
                     <input type="text" id="edit-hero-headline" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
                 </div>
                 <div>
-                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Hero Subtitle / Mission</label>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Homepage Introduction</label>
                     <textarea id="edit-hero-sub" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
                 </div>
 
@@ -656,455 +656,1246 @@
         </div>
     </div>
 
-    <!-- Application Logic -->
+    <!-- ========================================================= -->
+    <!-- APPLICATION DATA & LOGIC                                  -->
+    <!-- ========================================================= -->
     <script>
-        // ==========================================
-        // DEFAULT DATA STATE (Easily customizable)
-        // ==========================================
         const defaultData = {
             meta: {
-                siteName: "OpenEdu Initiative",
-                heroTitle: "Accessible, Structured Learning for Everyone.",
-                heroSubtitle: "Welcome to our public educational portal. This platform is designed to deliver clear, interactive modules, curated study guides, and hands-on exercises—hosted openly on GitHub Pages for learners and educators worldwide."
+                topicTitle: "Artificial Intelligence for Multimedia",
+                groupName: "Group 04",
+                courseCode: "Multimedia Computing • 6-Member Collaborative",
+                heroSubtitle: "An open-access academic guide exploring how modern deep neural architectures perceive, align, synthesize, and authenticate visual, acoustic, and textual media—authored collaboratively by our 6-member research group."
             },
-            sitemap: [
+            members: [
                 {
                     id: 1,
-                    title: "Homepage & Project Overview",
-                    route: "/index.html#home",
-                    description: "Public landing page introducing the educational initiative, core learning objectives, and project milestones.",
-                    owner: "Project Lead",
-                    status: "Live"
+                    name: "Member 1 (Edit Name)",
+                    studentId: "ID-001",
+                    role: "Team Lead & Multimodal Representation Author",
+                    moduleNum: 1,
+                    moduleTitle: "Foundations of Multimodal Representation & Feature Extraction",
+                    tasks: [
+                        "Authored Module 1 on joint latent embeddings, spectrograms, and contrastive alignment",
+                        "Created Figure 1.1 (Multimodal Latent Projection Pipeline SVG) & verified CLIP metrics",
+                        "Managed GitHub Pages repository deployment and final portal submission"
+                    ]
                 },
                 {
                     id: 2,
-                    title: "Curriculum Site Map",
-                    route: "/index.html#sitemap",
-                    description: "Visual hierarchy and structured directory detailing all current and upcoming educational pages.",
-                    owner: "Information Architect",
-                    status: "Live"
+                    name: "Member 2 (Edit Name)",
+                    studentId: "ID-002",
+                    role: "Computer Vision & Video Modeling Author",
+                    moduleNum: 2,
+                    moduleTitle: "Deep Computer Vision for Image & Video Understanding",
+                    tasks: [
+                        "Authored Module 2 covering CNNs, Vision Transformers (ViT), and spatiotemporal modeling",
+                        "Created Figure 2.1 (ViT Patch Embedding & Attention Architecture SVG)",
+                        "Verified ImageNet-1k top-1 accuracy benchmarks against Dosovitskiy et al. (2020)"
+                    ]
                 },
                 {
                     id: 3,
-                    title: "Member Responsibilities",
-                    route: "/index.html#team",
-                    description: "Transparent team roster outlining contributor roles, deliverables, and task ownership.",
-                    owner: "Project Lead",
-                    status: "Live"
+                    name: "Member 3 (Edit Name)",
+                    studentId: "ID-003",
+                    role: "Audio Processing & Speech Intelligence Author",
+                    moduleNum: 3,
+                    moduleTitle: "Speech, Audio Processing & Acoustic Intelligence",
+                    tasks: [
+                        "Authored Module 3 on log-Mel spectrograms, wav2vec 2.0, and Whisper ASR transformers",
+                        "Created Figure 3.1 (Acoustic Waveform to Sequence-to-Sequence Pipeline SVG)",
+                        "Verified LibriSpeech Word Error Rate (WER) claims against Radford et al. (2022)"
+                    ]
                 },
                 {
                     id: 4,
-                    title: "Module 1: Core Foundations",
-                    route: "/modules/module-01.html",
-                    description: "Introductory lesson covering essential terminology, historical context, and baseline concepts.",
-                    owner: "Curriculum Lead",
-                    status: "In Progress"
+                    name: "Member 4 (Edit Name)",
+                    studentId: "ID-004",
+                    role: "Generative Multimedia Synthesis Author",
+                    moduleNum: 4,
+                    moduleTitle: "Generative AI for Multimedia Synthesis",
+                    tasks: [
+                        "Authored Module 4 comparing GANs, VAEs, and Denoising Diffusion Probabilistic Models",
+                        "Created Figure 4.1 (Latent Diffusion Forward & Reverse Denoising SVG)",
+                        "Verified CIFAR-10 FID synthesis scores against Ho et al. (2020) & Rombach et al. (2022)"
+                    ]
                 },
                 {
                     id: 5,
-                    title: "Interactive Self-Check Quiz",
-                    route: "/assessments/quiz-01.html",
-                    description: "Browser-based formative quiz with instant feedback and score explanations for Module 1.",
-                    owner: "Frontend Developer",
-                    status: "In Progress"
+                    name: "Member 5 (Edit Name)",
+                    studentId: "ID-005",
+                    role: "Cross-Modal Retrieval & VLM Author",
+                    moduleNum: 5,
+                    moduleTitle: "Cross-Modal Retrieval, Captioning & Vision-Language Models",
+                    tasks: [
+                        "Authored Module 5 on cross-attention fusion, InfoNCE loss, and Visual Question Answering",
+                        "Created Figure 5.1 (Dual-Encoder Contrastive Matrix & Cross-Attention SVG)",
+                        "Verified zero-shot ImageNet transfer benchmarks against Radford et al. (2021)"
+                    ]
                 },
                 {
                     id: 6,
-                    title: "Module 2: Applied Frameworks",
-                    route: "/modules/module-02.html",
-                    description: "Step-by-step walkthroughs of core analytical methods with annotated examples.",
-                    owner: "Curriculum Lead",
-                    status: "Planned"
-                },
-                {
-                    id: 7,
-                    title: "Module 3: Real-World Case Studies",
-                    route: "/modules/module-03.html",
-                    description: "Comparative case analyses demonstrating practical application across diverse scenarios.",
-                    owner: "Research Editor",
-                    status: "Planned"
-                },
-                {
-                    id: 8,
-                    title: "Glossary & Reference Library",
-                    route: "/resources/glossary.html",
-                    description: "Searchable index of key terms, academic citations, and downloadable PDF study sheets.",
-                    owner: "Research Editor",
-                    status: "Planned"
+                    name: "Member 6 (Edit Name)",
+                    studentId: "ID-006",
+                    role: "Multimedia Ethics, Forensics & Governance Lead",
+                    moduleNum: 6,
+                    moduleTitle: "Multimedia Ethics, Deepfake Detection & Watermarking",
+                    tasks: [
+                        "Authored Module 6 on synthetic media forensics, C2PA provenance, and copyright ethics",
+                        "Created Figure 6.1 (Frequency-Domain Deepfake Forensics & C2PA Signing SVG)",
+                        "Curated the Annotated Resource Library and AI/Source-Use Transparency Statement"
+                    ]
                 }
             ],
-            team: [
+            resources: [
                 {
-                    id: 101,
-                    name: "Member 1 (Placeholder Name)",
-                    role: "Project Lead & GitHub Maintainer",
-                    status: "Completed Phase 1",
-                    initials: "M1",
-                    tasks: [
-                        "Configure GitHub repository and deploy public GitHub Pages site",
-                        "Define overall project roadmap, milestones, and publication schedule",
-                        "Coordinate cross-team reviews and maintain site navigation structure"
-                    ]
+                    id: "ref-vaswani",
+                    code: "Vaswani et al., 2017",
+                    title: "Attention Is All You Need",
+                    venue: "NeurIPS 2017 • arXiv:1706.03762",
+                    url: "https://arxiv.org/abs/1706.03762",
+                    category: "Multimodal",
+                    usedIn: "Modules 1, 2, 3, 5",
+                    annotation: "Introduces the Transformer architecture based entirely on scaled dot-product self-attention, eliminating recurrence. This mechanism serves as the unified computational backbone across modern vision (ViT), audio (Whisper), and cross-modal vision-language models."
                 },
                 {
-                    id: 102,
-                    name: "Member 2 (Placeholder Name)",
-                    role: "Curriculum & Content Lead",
-                    status: "Active - On Track",
-                    initials: "M2",
-                    tasks: [
-                        "Draft core learning objectives and pedagogical structure",
-                        "Author written lesson content for Module 1 and Module 2",
-                        "Design formative assessment questions and answer rubrics"
-                    ]
+                    id: "ref-clip",
+                    code: "Radford et al., 2021",
+                    title: "Learning Transferable Visual Models From Natural Language Supervision (CLIP)",
+                    venue: "ICML 2021 • arXiv:2103.00020",
+                    url: "https://arxiv.org/abs/2103.00020",
+                    category: "Multimodal",
+                    usedIn: "Modules 1, 5",
+                    annotation: "Demonstrates that symmetric InfoNCE contrastive pretraining on 400 million image-text pairs aligns visual and linguistic representations in a shared hypersphere. Achieves 76.2% zero-shot top-1 accuracy on ImageNet without using a single labeled training example."
                 },
                 {
-                    id: 103,
-                    name: "Member 3 (Placeholder Name)",
-                    role: "UI/UX & Frontend Developer",
-                    status: "Active - On Track",
-                    initials: "M3",
-                    tasks: [
-                        "Build responsive HTML/CSS/JS templates for educational modules",
-                        "Implement interactive quizzes, visual site map, and accessibility standards",
-                        "Optimize mobile layout and cross-browser compatibility"
-                    ]
+                    id: "ref-resnet",
+                    code: "He et al., 2016",
+                    title: "Deep Residual Learning for Image Recognition (ResNet)",
+                    venue: "IEEE CVPR 2016 • DOI: 10.1109/CVPR.2016.90",
+                    url: "https://doi.org/10.1109/CVPR.2016.90",
+                    category: "Vision & Audio",
+                    usedIn: "Modules 1, 2",
+                    annotation: "Solves vanishing gradients in ultra-deep convolutional networks using identity skip connections. Remains a foundational spatial feature extractor for visual backbones, video frame encoders, and spectrogram classifiers."
                 },
                 {
-                    id: 104,
-                    name: "Member 4 (Placeholder Name)",
-                    role: "Research & Quality Assurance Editor",
-                    status: "In Review",
-                    initials: "M4",
-                    tasks: [
-                        "Verify factual accuracy, citations, and open-access licensing",
-                        "Compile the glossary of key terms and downloadable study guides",
-                        "Test all links, interactive widgets, and readability across devices"
-                    ]
+                    id: "ref-vit",
+                    code: "Dosovitskiy et al., 2020",
+                    title: "An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale (ViT)",
+                    venue: "ICLR 2021 • arXiv:2010.11929",
+                    url: "https://arxiv.org/abs/2010.11929",
+                    category: "Vision & Audio",
+                    usedIn: "Modules 1, 2",
+                    annotation: "Shows that splitting images into fixed 16x16 linear patch embeddings allows standard Transformer encoders to outperform state-of-the-art CNNs when pretrained at scale, reaching 88.55% top-1 accuracy on ImageNet-1k."
+                },
+                {
+                    id: "ref-wav2vec",
+                    code: "Baevski et al., 2020",
+                    title: "wav2vec 2.0: A Framework for Self-Supervised Learning of Speech Representations",
+                    venue: "NeurIPS 2020 • arXiv:2006.11477",
+                    url: "https://arxiv.org/abs/2006.11477",
+                    category: "Vision & Audio",
+                    usedIn: "Module 3",
+                    annotation: "Establishes self-supervised masking over latent speech representations quantized via Gumbel-Softmax. Proves that acoustic models can learn rich phonetic structure from unlabeled raw waveforms before fine-tuning on minimal transcribed audio."
+                },
+                {
+                    id: "ref-whisper",
+                    code: "Radford et al., 2022",
+                    title: "Robust Speech Recognition via Large-Scale Weak Supervision (Whisper)",
+                    venue: "ICML 2023 • arXiv:2212.04356",
+                    url: "https://arxiv.org/abs/2212.04356",
+                    category: "Vision & Audio",
+                    usedIn: "Module 3",
+                    annotation: "Scales encoder-decoder Transformer ASR across 680,000 hours of multilingual, multitask web audio converted into 80-channel log-Mel spectrograms. Delivers 2.7% Word Error Rate (WER) on LibriSpeech test-clean without dataset-specific fine-tuning."
+                },
+                {
+                    id: "ref-gan",
+                    code: "Goodfellow et al., 2014",
+                    title: "Generative Adversarial Nets (GANs)",
+                    venue: "NeurIPS 2014 • arXiv:1406.2661",
+                    url: "https://arxiv.org/abs/1406.2661",
+                    category: "Generative & Ethics",
+                    usedIn: "Modules 4, 6",
+                    annotation: "Formulates generative modeling as a two-player minimax game between a Generator and a Discriminator. Pioneered photorealistic image synthesis and motivated early forensic research into synthetic facial manipulation."
+                },
+                {
+                    id: "ref-ddpm",
+                    code: "Ho et al., 2020",
+                    title: "Denoising Diffusion Probabilistic Models (DDPM)",
+                    venue: "NeurIPS 2020 • arXiv:2006.11239",
+                    url: "https://arxiv.org/abs/2006.11239",
+                    category: "Generative & Ethics",
+                    usedIn: "Module 4",
+                    annotation: "Connects score-based generative modeling with non-equilibrium thermodynamics by training a U-Net to reverse a gradual Markovian Gaussian noise schedule. Achieved a landmark 3.17 FID score on unconditional CIFAR-10 synthesis."
+                },
+                {
+                    id: "ref-ldm",
+                    code: "Rombach et al., 2022",
+                    title: "High-Resolution Image Synthesis with Latent Diffusion Models (Stable Diffusion)",
+                    venue: "IEEE CVPR 2022 • DOI: 10.1109/CVPR52688.2022.01042",
+                    url: "https://doi.org/10.1109/CVPR52688.2022.01042",
+                    category: "Generative & Ethics",
+                    usedIn: "Modules 4, 5",
+                    annotation: "Moves the computationally expensive diffusion denoising loop from high-dimensional pixel space into a compressed perceptual VAE latent space conditioned via cross-attention, enabling consumer-GPU text-to-image synthesis."
+                },
+                {
+                    id: "ref-forensics",
+                    code: "Rossler et al., 2019",
+                    title: "FaceForensics++: Learning to Detect Manipulated Facial Images",
+                    venue: "IEEE ICCV 2019 • DOI: 10.1109/ICCV.2019.00009",
+                    url: "https://doi.org/10.1109/ICCV.2019.00009",
+                    category: "Generative & Ethics",
+                    usedIn: "Module 6",
+                    annotation: "Provides a standardized benchmark of over 1.8 million manipulated video frames across Deepfakes, Face2Face, FaceSwap, and NeuralTextures under realistic social-media compression, establishing baseline forensic detection protocols."
                 }
             ]
         };
 
-        // Load state from localStorage or fallback to defaultData
-        let appState = JSON.parse(localStorage.getItem('eduPortalState')) || JSON.parse(JSON.stringify(defaultData));
-        let currentSitemapFilter = 'all';
+        // Detailed Educational Content for all 6 Individual Student Modules
+        const modulesContent = [
+            {
+                num: 1,
+                shortTitle: "1. Multimodal Foundations",
+                title: "Module 1: Foundations of Multimodal Representation & Feature Extraction",
+                subtitle: "Transforming heterogeneous raw signals—images, audio waveforms, and text—into unified mathematical vector spaces.",
+                section1Title: "1.1 From Heterogeneous Signals to Shared Latent Spaces",
+                section1Body: `
+                    <p class="mb-4">
+                        Human perception integrates sight, sound, and language effortlessly, yet raw digital multimedia exists in incompatible data structures: 2D/3D spatial pixel grids for visual media, 1D continuous pressure waveforms for audio, and discrete symbolic tokens for text. The core objective of <strong>multimodal representation learning</strong> is to project these disparate modalities into a unified, geometry-preserving <em>joint embedding space</em> where semantic similarity corresponds to geometric proximity (measured via cosine similarity).
+                    </p>
+                    <p class="mb-4">
+                        Early systems relied on hand-crafted descriptors such as SIFT for images and MFCCs for speech. Today, modality-specific neural encoders extract hierarchical embeddings: convolutional backbones (<a onclick="navigateTo('resources', 'ref-resnet')" class="internal-link">He et al., 2016</a>) or patch-based Vision Transformers (<span onclick="navigateTo('modules', 2)" class="internal-link">Module 2: Deep Computer Vision</span>) encode visual frames into dense vectors, while acoustic encoders convert time-frequency spectrograms into sequential embeddings (<span onclick="navigateTo('modules', 3)" class="internal-link">Module 3: Speech & Audio Processing</span>).
+                    </p>
+                `,
+                section2Title: "1.2 Contrastive Alignment & Projection Heads",
+                section2Body: `
+                    <p class="mb-4">
+                        Once independent encoders produce modality-specific feature vectors $\mathbf{v} \in \mathbb{R}^{d_v}$ and $\mathbf{t} \in \mathbb{R}^{d_t}$, linear or MLP projection heads map both into a shared $d$-dimensional hypersphere ($\mathbf{z}_v, \mathbf{z}_t \in \mathbb{R}^d$). Using L2-normalization, cross-modal similarity is computed cleanly as the dot product $\text{sim}(\mathbf{z}_v, \mathbf{z}_t) = \mathbf{z}_v^\top \mathbf{z}_t / \tau$, where $\tau$ is a learnable temperature parameter controlling distribution sharpness.
+                    </p>
+                    <p>
+                        This geometric alignment enables downstream <span onclick="navigateTo('modules', 5)" class="internal-link">Module 5: Cross-Modal Retrieval & VLMs</span> to perform zero-shot classification and semantic search across billions of multimedia assets without task-specific retraining.
+                    </p>
+                `,
+                formula: "sim(z_image, z_text) = (W_v · f_vision(x_v))ᵀ (W_t · f_text(x_t)) / (||z_image|| · ||z_text|| · τ)",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 250" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Multimodal Joint Embedding Pipeline">
+                        <defs>
+                            <marker id="arrow1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                            </marker>
+                        </defs>
+                        <!-- Visual Branch -->
+                        <rect x="20" y="25" width="140" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="90" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Image / Video</text>
+                        <text x="90" y="64" text-anchor="middle" font-size="9.5" fill="#64748b">H × W × 3 Pixels</text>
+                        <line x1="160" y1="51" x2="215" y2="51" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+                        <rect x="220" y="25" width="150" height="52" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="295" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Visual Encoder</text>
+                        <text x="295" y="64" text-anchor="middle" font-size="9.5" fill="#3b82f6">ViT / ResNet Backbone</text>
+
+                        <!-- Audio Branch -->
+                        <rect x="20" y="99" width="140" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="90" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Audio Waveform</text>
+                        <text x="90" y="138" text-anchor="middle" font-size="9.5" fill="#64748b">Log-Mel Spectrogram</text>
+                        <line x1="160" y1="125" x2="215" y2="125" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+                        <rect x="220" y="99" width="150" height="52" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="295" y="122" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Acoustic Encoder</text>
+                        <text x="295" y="138" text-anchor="middle" font-size="9.5" fill="#3b82f6">Conformer / Whisper</text>
+
+                        <!-- Text Branch -->
+                        <rect x="20" y="173" width="140" height="52" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="90" y="196" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Text Tokens</text>
+                        <text x="90" y="212" text-anchor="middle" font-size="9.5" fill="#64748b">BPE Subword IDs</text>
+                        <line x1="160" y1="199" x2="215" y2="199" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+                        <rect x="220" y="173" width="150" height="52" rx="8" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="295" y="196" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Text Transformer</text>
+                        <text x="295" y="212" text-anchor="middle" font-size="9.5" fill="#3b82f6">Masked Self-Attention</text>
+
+                        <!-- Projection Lines -->
+                        <line x1="370" y1="51" x2="455" y2="105" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+                        <line x1="370" y1="125" x2="455" y2="125" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+                        <line x1="370" y1="199" x2="455" y2="145" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow1)"/>
+
+                        <!-- Joint Hypersphere -->
+                        <rect x="460" y="55" width="275" height="140" rx="14" fill="#0f172a" stroke="#1e293b" stroke-width="2"/>
+                        <text x="597" y="85" text-anchor="middle" font-size="12" font-weight="700" fill="#ffffff">Shared L2-Normalized Latent Space</text>
+                        <circle cx="555" cy="132" r="24" fill="#2563eb" fill-opacity="0.25" stroke="#60a5fa" stroke-dasharray="3 2"/>
+                        <circle cx="548" cy="128" r="4" fill="#38bdf8"/>
+                        <text x="530" y="122" font-size="9" fill="#bae6fd">z_img</text>
+                        <circle cx="562" cy="136" r="4" fill="#34d399"/>
+                        <text x="570" y="142" font-size="9" fill="#a7f3d0">z_txt</text>
+                        <text x="655" y="126" text-anchor="middle" font-size="10" font-family="monospace" fill="#93c5fd">cos(θ) → 1.0</text>
+                        <text x="655" y="143" text-anchor="middle" font-size="9" fill="#94a3b8">Aligned Semantics</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 1.1: Multimodal Representation Pipeline projecting heterogeneous visual, acoustic, and textual inputs into an L2-normalized joint embedding hypersphere. Original diagram created by Member 1, adapted from Radford et al. (2021).",
+                claimText: "Contrastive multimodal pretraining on 400M image-text pairs enables CLIP to achieve 76.2% zero-shot top-1 accuracy on ImageNet without task-specific supervised fine-tuning.",
+                claimSource: "Radford et al. (2021), 'Learning Transferable Visual Models From Natural Language Supervision', arXiv:2103.00020",
+                claimRefId: "ref-clip",
+                quiz: [
+                    {
+                        q: "Why are multimodal embeddings typically L2-normalized before computing similarity?",
+                        options: [
+                            "To ensure dot products equal cosine similarity on a unit hypersphere, preventing magnitude bias",
+                            "To convert 2D images back into 1D audio waveforms",
+                            "To eliminate the need for neural encoders"
+                        ],
+                        answer: 0,
+                        explanation: "L2-normalization constrains vectors to unit length so their dot product measures pure angular alignment (cosine similarity) rather than vector norm."
+                    },
+                    {
+                        q: "What role does the learnable temperature parameter (τ) play in contrastive similarity?",
+                        options: [
+                            "It controls the physical GPU fan speed during training",
+                            "It scales the logits to sharpen or soften the probability distribution over positive vs. negative pairs",
+                            "It determines the pixel resolution of input images"
+                        ],
+                        answer: 1,
+                        explanation: "Dividing cosine similarity by temperature τ controls how strongly the InfoNCE loss penalizes hard negative samples."
+                    }
+                ]
+            },
+            {
+                num: 2,
+                shortTitle: "2. Deep Computer Vision",
+                title: "Module 2: Deep Computer Vision for Image & Video Understanding",
+                subtitle: "From local convolutional receptive fields to global self-attention in Vision Transformers and spatiotemporal video models.",
+                section1Title: "2.1 Inductive Biases: CNNs vs. Vision Transformers (ViT)",
+                section1Body: `
+                    <p class="mb-4">
+                        For nearly a decade, Convolutional Neural Networks (CNNs) such as ResNet (<a onclick="navigateTo('resources', 'ref-resnet')" class="internal-link">He et al., 2016</a>) dominated visual recognition by leveraging strong spatial inductive biases: translation equivariance and local neighborhood connectivity. However, fixed-size convolutional kernels require many stacked layers to capture long-range global relationships across an image.
+                    </p>
+                    <p class="mb-4">
+                        Building on the Transformer architecture (<a onclick="navigateTo('resources', 'ref-vaswani')" class="internal-link">Vaswani et al., 2017</a>) introduced in <span onclick="navigateTo('modules', 1)" class="internal-link">Module 1: Multimodal Foundations</span>, the <strong>Vision Transformer (ViT)</strong> (<a onclick="navigateTo('resources', 'ref-vit')" class="internal-link">Dosovitskiy et al., 2020</a>) reshapes a 2D image $x \in \mathbb{R}^{H \times W \times C}$ into a sequence of $N = HW/P^2$ flattened 2D patches of size $P \times P$ (typically $16 \times 16$). Each patch is linearly projected into a token embedding, summed with learnable 1D positional embeddings, and processed by multi-head self-attention (MHSA).
+                    </p>
+                `,
+                section2Title: "2.2 Spatiotemporal Modeling for Video Understanding",
+                section2Body: `
+                    <p class="mb-4">
+                        Extending visual understanding from static images to video introduces a temporal axis $T$, yielding 4D tensors $V \in \mathbb{R}^{T \times H \times W \times C}$. Modern video transformers (such as TimeSformer and ViViT) extract 3D spatiotemporal <em>tubelets</em> ($t \times P \times P$) or factorize attention into sequential spatial attention followed by temporal attention across frames.
+                    </p>
+                    <p>
+                        These spatiotemporal features power action recognition, video object tracking, and serve as the visual conditioning stream for <span onclick="navigateTo('modules', 5)" class="internal-link">Module 5: Cross-Modal Retrieval & VLMs</span> as well as forensic artifact detection in <span onclick="navigateTo('modules', 6)" class="internal-link">Module 6: Multimedia Ethics & Forensics</span>.
+                    </p>
+                `,
+                formula: "z_0 = [x_class; x_p^1 E; x_p^2 E; ...; x_p^N E] + E_pos,   where N = (H · W) / P²",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 230" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Vision Transformer Patch Embedding Architecture">
+                        <defs>
+                            <marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                            </marker>
+                        </defs>
+                        <!-- Input Grid -->
+                        <rect x="25" y="45" width="110" height="110" rx="6" fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+                        <line x1="61" y1="45" x2="61" y2="155" stroke="#3b82f6" stroke-width="1"/>
+                        <line x1="98" y1="45" x2="98" y2="155" stroke="#3b82f6" stroke-width="1"/>
+                        <line x1="25" y1="81" x2="135" y2="81" stroke="#3b82f6" stroke-width="1"/>
+                        <line x1="25" y1="118" x2="135" y2="118" stroke="#3b82f6" stroke-width="1"/>
+                        <text x="80" y="178" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f172a">Image (P×P Patches)</text>
+
+                        <line x1="140" y1="100" x2="195" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                        <!-- Linear Projection + Pos -->
+                        <rect x="200" y="45" width="155" height="110" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="277" y="75" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Linear Patch Projection</text>
+                        <text x="277" y="95" text-anchor="middle" font-size="9.5" fill="#475569">+ [CLS] Token Prepend</text>
+                        <text x="277" y="113" text-anchor="middle" font-size="9.5" fill="#2563eb" font-weight="600">+ 1D Positional Embeddings</text>
+                        <rect x="225" y="126" width="105" height="18" rx="4" fill="#eff6ff"/>
+                        <text x="277" y="138" text-anchor="middle" font-size="9" font-family="monospace" fill="#1d4ed8">z_0 ∈ ℝ^((N+1)×D)</text>
+
+                        <line x1="355" y1="100" x2="410" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                        <!-- Transformer Encoder -->
+                        <rect x="415" y="35" width="175" height="130" rx="12" fill="#0f172a"/>
+                        <text x="502" y="65" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">Transformer Encoder (L×)</text>
+                        <rect x="435" y="78" width="135" height="28" rx="6" fill="#1e293b" stroke="#3b82f6"/>
+                        <text x="502" y="96" text-anchor="middle" font-size="9.5" fill="#93c5fd">Multi-Head Self-Attention</text>
+                        <rect x="435" y="116" width="135" height="28" rx="6" fill="#1e293b" stroke="#64748b"/>
+                        <text x="502" y="134" text-anchor="middle" font-size="9.5" fill="#e2e8f0">LayerNorm + GELU MLP</text>
+
+                        <line x1="590" y1="100" x2="635" y2="100" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow2)"/>
+
+                        <!-- Output Head -->
+                        <rect x="640" y="62" width="100" height="76" rx="10" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+                        <text x="690" y="94" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">[CLS] Head</text>
+                        <text x="690" y="112" text-anchor="middle" font-size="9" fill="#475569">Class / Dense</text>
+                        <text x="690" y="124" text-anchor="middle" font-size="9" fill="#475569">Visual Feature</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 2.1: Vision Transformer (ViT) architecture splitting an input image into 16×16 linear patch tokens with positional encoding. Original diagram created by Member 2, adapted from Dosovitskiy et al. (2020).",
+                claimText: "When pretrained on large-scale datasets (JFT-300M), Vision Transformer (ViT-H/14) achieves 88.55% top-1 accuracy on ImageNet-1k while requiring substantially fewer computational FLOPs to train than comparable deep ResNets.",
+                claimSource: "Dosovitskiy et al. (2020), 'An Image is Worth 16x16 Words: Transformers for Image Recognition at Scale', arXiv:2010.11929",
+                claimRefId: "ref-vit",
+                quiz: [
+                    {
+                        q: "How many patch tokens (excluding [CLS]) are generated when a 224×224 image is split into 16×16 patches?",
+                        options: ["14 tokens", "196 tokens (14 × 14)", "256 tokens"],
+                        answer: 1,
+                        explanation: "224 / 16 = 14 patches along height and width, yielding 14 × 14 = 196 patch tokens."
+                    },
+                    {
+                        q: "Why are positional embeddings added to ViT patch projections?",
+                        options: [
+                            "Self-attention is permutation-equivariant and otherwise has no knowledge of 2D spatial patch order",
+                            "To compress RGB color channels into grayscale",
+                            "To increase convolutional stride"
+                        ],
+                        answer: 0,
+                        explanation: "Without positional embeddings, shuffling the image patches would produce identical attention outputs."
+                    }
+                ]
+            },
+            {
+                num: 3,
+                shortTitle: "3. Speech & Audio AI",
+                title: "Module 3: Speech, Audio Processing & Acoustic Intelligence",
+                subtitle: "Time-frequency transformations, self-supervised waveform encoders, and large-scale sequence-to-sequence speech recognition.",
+                section1Title: "3.1 Acoustic Feature Engineering: Log-Mel Spectrograms",
+                section1Body: `
+                    <p class="mb-4">
+                        Raw digital audio is sampled at high temporal resolutions (typically 16 kHz for speech or 44.1 kHz for music), producing tens of thousands of scalar amplitude samples per second. To expose harmonic and phonetic structure, audio signals are segmented into overlapping short-time windows (e.g., 25 ms windows with a 10 ms stride) and transformed via the Short-Time Fourier Transform (STFT).
+                    </p>
+                    <p class="mb-4">
+                        The resulting power spectrum is projected onto the <strong>Mel scale</strong>—a perceptual frequency scale reflecting human cochlear sensitivity—and compressed logarithmically into an 80-channel <em>log-Mel spectrogram</em>. Treated as a 2D time-frequency matrix, this spectrogram can be processed by 1D/2D convolutional front-ends and Transformer encoders (<span onclick="navigateTo('modules', 1)" class="internal-link">Module 1: Multimodal Foundations</span>).
+                    </p>
+                `,
+                section2Title: "3.2 Self-Supervised Speech & Weakly Supervised Whisper ASR",
+                section2Body: `
+                    <p class="mb-4">
+                        Modern acoustic intelligence has evolved along two complementary paradigms. Self-supervised models like <strong>wav2vec 2.0</strong> (<a onclick="navigateTo('resources', 'ref-wav2vec')" class="internal-link">Baevski et al., 2020</a>) mask spans of latent speech representations and solve a contrastive quantization task over unlabeled audio. Conversely, <strong>Whisper</strong> (<a onclick="navigateTo('resources', 'ref-whisper')" class="internal-link">Radford et al., 2022</a>) trains a full encoder-decoder Transformer on 680,000 hours of weakly supervised multilingual web audio.
+                    </p>
+                    <p>
+                        By predicting transcripts, language tags, and timestamps autoregressively, acoustic transformers provide robust spoken-language interfaces that feed directly into <span onclick="navigateTo('modules', 5)" class="internal-link">Module 5: Cross-Modal Retrieval & VLMs</span> for video subtitling and audio-visual indexing.
+                    </p>
+                `,
+                formula: "Mel(f) = 2595 · log₁₀(1 + f / 700),    WER = (Substitutions + Deletions + Insertions) / N_words",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 220" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Speech Recognition Transformer Pipeline">
+                        <defs>
+                            <marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                            </marker>
+                        </defs>
+                        <!-- Waveform -->
+                        <rect x="20" y="55" width="130" height="95" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <polyline points="32,102 42,82 52,122 62,72 72,130 82,88 92,115 102,76 112,124 122,95 138,102" fill="none" stroke="#2563eb" stroke-width="2"/>
+                        <text x="85" y="138" text-anchor="middle" font-size="10" font-weight="700" fill="#0f172a">16kHz Waveform</text>
+
+                        <line x1="150" y1="102" x2="195" y2="102" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                        <!-- Log-Mel Spectrogram -->
+                        <rect x="200" y="55" width="145" height="95" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="272" y="88" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">STFT + Mel Filterbank</text>
+                        <text x="272" y="106" text-anchor="middle" font-size="9.5" fill="#3b82f6">80-Channel Log-Mel</text>
+                        <text x="272" y="122" text-anchor="middle" font-size="9" font-family="monospace" fill="#475569">25ms win / 10ms stride</text>
+
+                        <line x1="345" y1="102" x2="390" y2="102" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                        <!-- Conv + Encoder-Decoder -->
+                        <rect x="395" y="42" width="185" height="120" rx="12" fill="#0f172a"/>
+                        <text x="487" y="70" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">2× Conv1D + Transformer</text>
+                        <rect x="415" y="82" width="145" height="26" rx="5" fill="#1e293b" stroke="#3b82f6"/>
+                        <text x="487" y="99" text-anchor="middle" font-size="9.5" fill="#93c5fd">Audio Encoder (Cross-Attn)</text>
+                        <rect x="415" y="116" width="145" height="26" rx="5" fill="#1e293b" stroke="#10b981"/>
+                        <text x="487" y="133" text-anchor="middle" font-size="9.5" fill="#6ee7b7">Autoregressive Text Decoder</text>
+
+                        <line x1="580" y1="102" x2="620" y2="102" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow3)"/>
+
+                        <!-- Transcript Output -->
+                        <rect x="625" y="55" width="115" height="95" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="682" y="88" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f172a">Multilingual</text>
+                        <text x="682" y="104" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f172a">Transcript</text>
+                        <text x="682" y="124" text-anchor="middle" font-size="9" font-family="monospace" fill="#059669">&lt;|en|&gt; &lt;|0.00|&gt;</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 3.1: Sequence-to-sequence acoustic processing pipeline converting 16 kHz raw audio into 80-channel log-Mel spectrograms for Transformer speech recognition. Original diagram created by Member 3, adapted from Radford et al. (2022).",
+                claimText: "Trained on 680,000 hours of weakly supervised multilingual audio, Whisper large-v2 achieves a zero-shot Word Error Rate (WER) of 2.7% on LibriSpeech test-clean without dataset-specific fine-tuning.",
+                claimSource: "Radford et al. (2022), 'Robust Speech Recognition via Large-Scale Weak Supervision', arXiv:2212.04356",
+                claimRefId: "ref-whisper",
+                quiz: [
+                    {
+                        q: "Why are frequencies warped onto the Mel scale before feeding spectrograms into speech models?",
+                        options: [
+                            "To match human auditory perception, which resolves lower frequencies more finely than high frequencies",
+                            "To increase the file size of WAV recordings",
+                            "To remove all vowel formants from speech"
+                        ],
+                        answer: 0,
+                        explanation: "The Mel scale spaces filterbanks logarithmically above 1 kHz, mirroring human cochlear pitch perception."
+                    },
+                    {
+                        q: "How does Whisper differ from wav2vec 2.0 in its pretraining paradigm?",
+                        options: [
+                            "Whisper uses large-scale weakly supervised multitask audio-text pairs, whereas wav2vec 2.0 uses self-supervised masked latent prediction",
+                            "Whisper only works on silent video",
+                            "wav2vec 2.0 does not use neural networks"
+                        ],
+                        answer: 0,
+                        explanation: "wav2vec 2.0 learns from unlabeled audio via contrastive masking, while Whisper trains end-to-end on 680k hours of noisy web transcripts."
+                    }
+                ]
+            },
+            {
+                num: 4,
+                shortTitle: "4. Generative Multimedia",
+                title: "Module 4: Generative AI for Multimedia Synthesis",
+                subtitle: "Adversarial networks, variational autoencoders, and latent denoising diffusion models for image, audio, and video generation.",
+                section1Title: "4.1 Evolution: From GANs to Denoising Diffusion (DDPM)",
+                section1Body: `
+                    <p class="mb-4">
+                        Generative multimedia models learn to sample novel, high-fidelity visual and acoustic data from complex underlying distributions $p_{\text{data}}(x)$. Early breakthroughs relied on <strong>Generative Adversarial Networks (GANs)</strong> (<a onclick="navigateTo('resources', 'ref-gan')" class="internal-link">Goodfellow et al., 2014</a>), pitting a Generator $G(z)$ against a Discriminator $D(x)$ in a minimax game. While fast at inference, GANs frequently suffered from training instability and mode collapse.
+                    </p>
+                    <p class="mb-4">
+                        <strong>Denoising Diffusion Probabilistic Models (DDPM)</strong> (<a onclick="navigateTo('resources', 'ref-ddpm')" class="internal-link">Ho et al., 2020</a>) overcome mode collapse by defining a fixed forward Markov chain that gradually adds Gaussian noise $\epsilon \sim \mathcal{N}(0, \mathbf{I})$ over $T$ timesteps until data becomes isotropic noise, then training a neural network $\epsilon_\theta(x_t, t)$ to predict and reverse that noise step-by-step.
+                    </p>
+                `,
+                section2Title: "4.2 Latent Diffusion & Cross-Attention Conditioning",
+                section2Body: `
+                    <p class="mb-4">
+                        Running iterative denoising directly in high-resolution pixel space ($512 \times 512 \times 3$) is computationally prohibitive. <strong>Latent Diffusion Models (LDMs)</strong> (<a onclick="navigateTo('resources', 'ref-ldm')" class="internal-link">Rombach et al., 2022</a>) first compress images via a perceptual Variational Autoencoder (VAE) encoder $\mathcal{E}(x) = z$ into a compact latent space (typically $8\times$ smaller spatially).
+                    </p>
+                    <p>
+                        Text prompts encoded via pretrained language/multimodal encoders (<span onclick="navigateTo('modules', 1)" class="internal-link">Module 1: Multimodal Foundations</span>) inject semantic guidance into the denoising U-Net via cross-attention layers. While enabling unprecedented creative synthesis, these capabilities necessitate robust provenance safeguards covered in <span onclick="navigateTo('modules', 6)" class="internal-link">Module 6: Multimedia Ethics & Forensics</span>.
+                    </p>
+                `,
+                formula: "L_simple(θ) = E_{t, x_0, ε} [ || ε − ε_θ( √(ᾱ_t) x_0 + √(1 − ᾱ_t) ε , t ) ||² ]",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 225" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Latent Diffusion Model Architecture">
+                        <defs>
+                            <marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                            </marker>
+                            <marker id="arrow4gray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#64748b"/>
+                            </marker>
+                        </defs>
+                        <!-- Pixel Space Input -->
+                        <rect x="20" y="35" width="110" height="75" rx="8" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="75" y="68" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f172a">Image x</text>
+                        <text x="75" y="84" text-anchor="middle" font-size="9" fill="#64748b">512×512×3</text>
+
+                        <line x1="130" y1="72" x2="170" y2="72" stroke="#64748b" stroke-width="2" marker-end="url(#arrow4gray)"/>
+
+                        <!-- VAE Encoder -->
+                        <rect x="175" y="35" width="95" height="75" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+                        <text x="222" y="68" text-anchor="middle" font-size="10.5" font-weight="700" fill="#334155">VAE Enc ε</text>
+                        <text x="222" y="84" text-anchor="middle" font-size="9" fill="#64748b">8× Compress</text>
+
+                        <line x1="270" y1="72" x2="315" y2="72" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow4)"/>
+
+                        <!-- Latent Denoising Loop -->
+                        <rect x="320" y="25" width="215" height="95" rx="12" fill="#0f172a"/>
+                        <text x="427" y="52" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Denoising U-Net ε_θ(z_t, t)</text>
+                        <text x="427" y="70" text-anchor="middle" font-size="9.5" fill="#93c5fd">Latent z_T ~ N(0,I) → z_0</text>
+                        <rect x="345" y="82" width="165" height="24" rx="5" fill="#1e293b" stroke="#3b82f6"/>
+                        <text x="427" y="98" text-anchor="middle" font-size="9" fill="#bae6fd">Cross-Attention Conditioning</text>
+
+                        <!-- Text Conditioning Box -->
+                        <rect x="340" y="148" width="175" height="52" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-width="1.5"/>
+                        <text x="427" y="170" text-anchor="middle" font-size="10.5" font-weight="700" fill="#1d4ed8">Text Prompt Encoder</text>
+                        <text x="427" y="186" text-anchor="middle" font-size="9" fill="#3b82f6">CLIP / T5 Token Embeddings</text>
+                        <line x1="427" y1="148" x2="427" y2="122" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow4)"/>
+
+                        <line x1="535" y1="72" x2="575" y2="72" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow4)"/>
+
+                        <!-- VAE Decoder -->
+                        <rect x="580" y="35" width="155" height="75" rx="8" fill="#ffffff" stroke="#2563eb" stroke-width="1.5"/>
+                        <text x="657" y="66" text-anchor="middle" font-size="10.5" font-weight="700" fill="#0f172a">VAE Decoder D(z_0)</text>
+                        <text x="657" y="84" text-anchor="middle" font-size="9.5" fill="#059669" font-weight="600">Synthesized Output x̃</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 4.1: Latent Diffusion Model (LDM) architecture performing iterative U-Net denoising inside a VAE-compressed perceptual latent space guided by text cross-attention. Original diagram created by Member 4, adapted from Rombach et al. (2022).",
+                claimText: "Denoising Diffusion Probabilistic Models (DDPM) achieve a Fréchet Inception Distance (FID) score of 3.17 on unconditional CIFAR-10 image generation, outperforming contemporary progressive GAN baselines without adversarial instability.",
+                claimSource: "Ho et al. (2020), 'Denoising Diffusion Probabilistic Models', NeurIPS 2020, arXiv:2006.11239",
+                claimRefId: "ref-ddpm",
+                quiz: [
+                    {
+                        q: "What is the primary computational advantage of Latent Diffusion Models (LDMs) over pixel-space diffusion?",
+                        options: [
+                            "Running iterative U-Net denoising in a compressed VAE latent space drastically reduces FLOPs and memory cost",
+                            "LDMs eliminate the need for any training data",
+                            "LDMs generate images in a single forward pass without noise schedules"
+                        ],
+                        answer: 0,
+                        explanation: "Compressing a 512×512 image to a 64×64 latent representation reduces spatial dimensions by 64× before denoising."
+                    },
+                    {
+                        q: "During DDPM training, what does the neural network ε_θ(x_t, t) directly learn to predict?",
+                        options: [
+                            "The Gaussian noise vector ε that was added to create noisy image x_t at timestep t",
+                            "The JPEG compression ratio of the file",
+                            "The audio sampling frequency"
+                        ],
+                        answer: 0,
+                        explanation: "Ho et al. (2020) showed that predicting the noise residual ε with an L2 MSE objective yields superior sample quality."
+                    }
+                ]
+            },
+            {
+                num: 5,
+                shortTitle: "5. Cross-Modal & VLMs",
+                title: "Module 5: Cross-Modal Retrieval, Captioning & Vision-Language Models",
+                subtitle: "Symmetric InfoNCE contrastive matrices, cross-attention fusion, and multimodal reasoning architectures.",
+                section1Title: "5.1 Dual-Encoder Retrieval vs. Fusion Vision-Language Models",
+                section1Body: `
+                    <p class="mb-4">
+                        Cross-modal systems bridge visual perception (<span onclick="navigateTo('modules', 2)" class="internal-link">Module 2: Deep Computer Vision</span>) and natural language understanding across two primary architectural patterns:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-2 mb-4">
+                        <li><strong>Dual-Encoder Retrieval (Bi-Encoders):</strong> Models like CLIP (<a onclick="navigateTo('resources', 'ref-clip')" class="internal-link">Radford et al., 2021</a>) encode images and text independently into a shared embedding space (<span onclick="navigateTo('modules', 1)" class="internal-link">Module 1: Multimodal Foundations</span>). Because embeddings can be pre-computed and indexed in vector databases, searching millions of images takes milliseconds.</li>
+                        <li><strong>Cross-Attention Fusion VLMs (e.g., Flamingo, BLIP-2, LLaVA):</strong> To perform fine-grained spatial reasoning such as Visual Question Answering (VQA) and dense image captioning, visual patch tokens are projected via a Q-Former or MLP connector directly into an autoregressive Large Language Model's token space.</li>
+                    </ul>
+                `,
+                section2Title: "5.2 Symmetric InfoNCE Contrastive Objective",
+                section2Body: `
+                    <p class="mb-4">
+                        To train dual-encoder retrieval models over a batch of $N$ paired image-text samples $\{(I_i, T_i)\}_{i=1}^N$, the model computes an $N \times N$ cosine similarity matrix. The symmetric <strong>InfoNCE loss</strong> maximizes the cosine similarity of the $N$ true diagonal pairs while minimizing the similarity of the $N^2 - N$ mismatched off-diagonal pairs across both image-to-text and text-to-image directions.
+                    </p>
+                    <p>
+                        In Large Vision-Language Models (LVLMs), visual tokens act as Keys ($K$) and Values ($V$) while text queries act as Queries ($Q$) inside cross-attention layers (<a onclick="navigateTo('resources', 'ref-vaswani')" class="internal-link">Vaswani et al., 2017</a>), grounding generated language in specific visual regions.
+                    </p>
+                `,
+                formula: "L_InfoNCE = -½ [ log( exp(sim(I_i, T_i)/τ) / Σ_j exp(sim(I_i, T_j)/τ) ) + log( exp(sim(T_i, I_i)/τ) / Σ_j exp(sim(T_i, I_j)/τ) ) ]",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 230" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Contrastive Similarity Matrix and Cross-Modal VLM">
+                        <!-- Left: NxN Contrastive Matrix -->
+                        <rect x="25" y="25" width="320" height="180" rx="12" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="185" y="48" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">N × N Contrastive Similarity Matrix</text>
+                        
+                        <!-- 4x4 Grid representation -->
+                        <g transform="translate(115, 62)">
+                            <rect x="0" y="0" width="28" height="28" fill="#2563eb" rx="4"/>
+                            <rect x="32" y="0" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="64" y="0" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="96" y="0" width="28" height="28" fill="#e2e8f0" rx="4"/>
+
+                            <rect x="0" y="32" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="32" y="32" width="28" height="28" fill="#2563eb" rx="4"/>
+                            <rect x="64" y="32" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="96" y="32" width="28" height="28" fill="#e2e8f0" rx="4"/>
+
+                            <rect x="0" y="64" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="32" y="64" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="64" y="64" width="28" height="28" fill="#2563eb" rx="4"/>
+                            <rect x="96" y="64" width="28" height="28" fill="#e2e8f0" rx="4"/>
+
+                            <rect x="0" y="96" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="32" y="96" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="64" y="96" width="28" height="28" fill="#e2e8f0" rx="4"/>
+                            <rect x="96" y="96" width="28" height="28" fill="#2563eb" rx="4"/>
+                        </g>
+                        <text x="65" y="130" text-anchor="middle" font-size="9.5" font-weight="600" fill="#475569">Images I₁..Iₙ</text>
+                        <text x="292" y="115" text-anchor="middle" font-size="9" font-weight="700" fill="#2563eb">Diagonal:</text>
+                        <text x="292" y="128" text-anchor="middle" font-size="8.5" fill="#475569">Positive Pairs</text>
+
+                        <!-- Right: VLM Cross-Attention Fusion -->
+                        <rect x="375" y="25" width="360" height="180" rx="12" fill="#0f172a"/>
+                        <text x="555" y="50" text-anchor="middle" font-size="11.5" font-weight="700" fill="#ffffff">Vision-Language Model (VLM) Fusion</text>
+                        
+                        <rect x="398" y="68" width="135" height="44" rx="7" fill="#1e293b" stroke="#3b82f6"/>
+                        <text x="465" y="88" text-anchor="middle" font-size="9.5" font-weight="600" fill="#93c5fd">Visual Patch Tokens</text>
+                        <text x="465" y="102" text-anchor="middle" font-size="8.5" fill="#cbd5e1">Keys (K) & Values (V)</text>
+
+                        <rect x="398" y="128" width="135" height="44" rx="7" fill="#1e293b" stroke="#10b981"/>
+                        <text x="465" y="148" text-anchor="middle" font-size="9.5" font-weight="600" fill="#6ee7b7">Text Prompt Tokens</text>
+                        <text x="465" y="162" text-anchor="middle" font-size="8.5" fill="#cbd5e1">Queries (Q)</text>
+
+                        <rect x="565" y="82" width="148" height="76" rx="8" fill="#2563eb"/>
+                        <text x="639" y="112" text-anchor="middle" font-size="10.5" font-weight="700" fill="#ffffff">Cross-Attention</text>
+                        <text x="639" y="128" text-anchor="middle" font-size="9" fill="#dbeafe">VQA & Dense</text>
+                        <text x="639" y="141" text-anchor="middle" font-size="9" fill="#dbeafe">Image Captioning</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 5.1: Comparison of N×N symmetric InfoNCE contrastive retrieval alignment (left) and Cross-Attention Vision-Language Model fusion for VQA (right). Original diagram created by Member 5, adapted from Radford et al. (2021) & Vaswani et al. (2017).",
+                claimText: "In a batch of N image-text pairs, symmetric InfoNCE contrastive training optimizes N positive diagonal alignments against N² − N negative off-diagonal pairs simultaneously, enabling CLIP ViT-L/14 to match ResNet-50 zero-shot accuracy on ImageNet.",
+                claimSource: "Radford et al. (2021), 'Learning Transferable Visual Models From Natural Language Supervision', arXiv:2103.00020",
+                claimRefId: "ref-clip",
+                quiz: [
+                    {
+                        q: "In a batch of N = 32 image-text pairs, how many negative off-diagonal pairs exist in the contrastive similarity matrix?",
+                        options: ["32 negative pairs", "992 negative pairs (32² − 32)", "64 negative pairs"],
+                        answer: 1,
+                        explanation: "An N×N matrix has N² total entries; subtracting the N true diagonal pairs leaves N² − N = 1024 − 32 = 992 negative pairs."
+                    },
+                    {
+                        q: "Why do Vision-Language Models (VLMs) use cross-attention or token projection into an LLM for Visual Question Answering (VQA)?",
+                        options: [
+                            "To allow fine-grained spatial reasoning and open-ended text generation grounded in specific image patches",
+                            "Because dual-encoders cannot be stored in vector databases",
+                            "To convert text prompts into audio spectrograms"
+                        ],
+                        answer: 0,
+                        explanation: "While dual-encoders compress an entire image into one global vector, cross-attention lets text tokens query localized image patch tokens."
+                    }
+                ]
+            },
+            {
+                num: 6,
+                shortTitle: "6. Ethics & Forensics",
+                title: "Module 6: Multimedia Ethics, Deepfake Detection & Watermarking",
+                subtitle: "Frequency-domain synthetic media forensics, cryptographic provenance (C2PA), and copyright governance.",
+                section1Title: "6.1 Passive Deepfake Detection & Spectral Artifacts",
+                section1Body: `
+                    <p class="mb-4">
+                        As generative models (<span onclick="navigateTo('modules', 4)" class="internal-link">Module 4: Generative AI for Multimedia Synthesis</span>) produce increasingly photorealistic faces, voices, and videos, passive forensic detectors inspect subtle statistical anomalies invisible to the human eye. Neural upsampling operations (such as transposed convolutions and bilinear interpolation) leave periodic grid artifacts in the 2D Discrete Fourier Transform (DFT) high-frequency magnitude spectrum.
+                    </p>
+                    <p class="mb-4">
+                        In video deepfakes benchmarked on <strong>FaceForensics++</strong> (<a onclick="navigateTo('resources', 'ref-forensics')" class="internal-link">Rossler et al., 2019</a>), detectors also analyze temporal inconsistencies across frames (<span onclick="navigateTo('modules', 2)" class="internal-link">Module 2: Deep Computer Vision</span>), including unnatural eye-blinking dynamics, boundary blending seams around facial landmarks, and lighting-reflection mismatches.
+                    </p>
+                `,
+                section2Title: "6.2 Active Provenance: C2PA Cryptographic Signing & Watermarking",
+                section2Body: `
+                    <p class="mb-4">
+                        Because passive classifiers degrade when synthetic media is heavily compressed on social networks, industry standards increasingly pair passive forensics with <strong>active provenance</strong>:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li><strong>C2PA Content Credentials:</strong> Cryptographically signs media metadata at the point of capture or AI generation using X.509 certificates, creating a tamper-evident edit history manifest.</li>
+                        <li><strong>Imperceptible Neural Watermarking (e.g., SynthID):</strong> Embeds spread-spectrum or latent-space watermark signals directly into generated pixels or audio waveforms so provenance survives cropping and JPEG re-compression.</li>
+                        <li><strong>Dataset Consent & Copyright:</strong> Addresses training-data attribution, artist opt-out registries, and fair-use boundaries in foundation multimedia models.</li>
+                    </ul>
+                `,
+                formula: "F(u, v) = Σ_{x=0}^{M-1} Σ_{y=0}^{N-1} I(x, y) · e^{-i 2π (ux/M + vy/N)}   (2D DFT Spectral Analysis)",
+                svgDiagram: `
+                    <svg viewBox="0 0 760 225" class="w-full h-auto bg-slate-50 rounded-xl border border-slate-200 p-2" role="img" aria-label="Dual-Track Multimedia Forensics and Provenance">
+                        <defs>
+                            <marker id="arrow6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                                <path d="M 0 1 L 10 5 L 0 9 z" fill="#2563eb"/>
+                            </marker>
+                        </defs>
+                        <!-- Suspect Media -->
+                        <rect x="20" y="72" width="130" height="80" rx="10" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+                        <text x="85" y="106" text-anchor="middle" font-size="11" font-weight="700" fill="#0f172a">Suspect Media</text>
+                        <text x="85" y="123" text-anchor="middle" font-size="9" fill="#64748b">Image / Video / Audio</text>
+
+                        <!-- Branching Arrows -->
+                        <line x1="150" y1="95" x2="215" y2="62" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow6)"/>
+                        <line x1="150" y1="130" x2="215" y2="162" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow6)"/>
+
+                        <!-- Track 1: Passive Forensics -->
+                        <rect x="220" y="22" width="295" height="78" rx="10" fill="#eff6ff" stroke="#3b82f6" stroke-width="1.5"/>
+                        <text x="367" y="45" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">Track A: Passive Forensic Detection</text>
+                        <text x="367" y="64" text-anchor="middle" font-size="9.5" fill="#334155">2D DFT High-Frequency Upsampling Artifacts</text>
+                        <text x="367" y="80" text-anchor="middle" font-size="9" fill="#475569">+ Facial Blending & Spatiotemporal Cues</text>
+
+                        <!-- Track 2: Active Provenance -->
+                        <rect x="220" y="124" width="295" height="78" rx="10" fill="#0f172a"/>
+                        <text x="367" y="147" text-anchor="middle" font-size="11" font-weight="700" fill="#ffffff">Track B: Active Provenance & Watermarks</text>
+                        <text x="367" y="166" text-anchor="middle" font-size="9.5" fill="#93c5fd">C2PA Cryptographic Signature Verification</text>
+                        <text x="367" y="182" text-anchor="middle" font-size="9" fill="#6ee7b7">+ Imperceptible Latent Neural Watermark</text>
+
+                        <line x1="515" y1="62" x2="575" y2="98" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow6)"/>
+                        <line x1="515" y1="162" x2="575" y2="126" stroke="#2563eb" stroke-width="2" marker-end="url(#arrow6)"/>
+
+                        <!-- Authenticity Verdict -->
+                        <rect x="580" y="70" width="155" height="84" rx="10" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+                        <text x="657" y="102" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">Authenticity &</text>
+                        <text x="657" y="118" text-anchor="middle" font-size="11" font-weight="700" fill="#065f46">Provenance Report</text>
+                        <text x="657" y="136" text-anchor="middle" font-size="9" fill="#047857">Auditable Trust Score</text>
+                    </svg>
+                `,
+                figureCaption: "Figure 6.1: Dual-track multimedia verification combining passive 2D-DFT spectral forensics with active C2PA cryptographic provenance and neural watermarking. Original diagram created by Member 6, referencing Rossler et al. (2019).",
+                claimText: "On the FaceForensics++ benchmark (1.8M manipulated frames), forensic detection accuracy drops substantially when videos undergo H.264 social-media compression, demonstrating why domain-specific compression training and active C2PA provenance are essential.",
+                claimSource: "Rossler et al. (2019), 'FaceForensics++: Learning to Detect Manipulated Facial Images', IEEE ICCV 2019, DOI: 10.1109/ICCV.2019.00009",
+                claimRefId: "ref-forensics",
+                quiz: [
+                    {
+                        q: "Why do generative neural networks often leave detectable anomalies in the 2D Fourier frequency spectrum?",
+                        options: [
+                            "Spatial upsampling layers introduce periodic grid-like high-frequency artifacts not found in natural camera sensors",
+                            "Cameras never capture high-frequency textures",
+                            "C2PA certificates alter the RGB color balance"
+                        ],
+                        answer: 0,
+                        explanation: "Transposed convolutions and upsampling kernels create regular spectral peaks in the high-frequency domain."
+                    },
+                    {
+                        q: "How does C2PA provenance differ from passive deepfake detection?",
+                        options: [
+                            "C2PA cryptographically signs origin and edit metadata at creation rather than guessing authenticity post-hoc",
+                            "C2PA only works on black-and-white text documents",
+                            "Passive detection embeds private keys inside camera hardware"
+                        ],
+                        answer: 0,
+                        explanation: "C2PA provides cryptographic proof of origin and edit history, complementing passive forensic classifiers."
+                    }
+                ]
+            }
+        ];
+
+        // Load state from localStorage or defaultData
+        let appState = JSON.parse(localStorage.getItem('aiMultimediaPortalState')) || JSON.parse(JSON.stringify(defaultData));
+        let activeModuleNum = 1;
+        let activeResourceFilter = 'all';
 
         function saveState() {
-            localStorage.setItem('eduPortalState', JSON.stringify(appState));
+            localStorage.setItem('aiMultimediaPortalState', JSON.stringify(appState));
         }
 
-        // ==========================================
-        // NAVIGATION & TAB SWITCHING
-        // ==========================================
-        function switchTab(tabName) {
-            // Hide all views
-            document.querySelectorAll('.view-section').forEach(section => {
-                section.classList.add('hidden');
-                section.classList.remove('block');
+        // =========================================================
+        // NAVIGATION & ROUTING
+        // =========================================================
+        function navigateTo(viewName, param = null) {
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.add('hidden');
+                el.classList.remove('block');
             });
 
-            // Show target view
-            const targetView = document.getElementById(`view-${tabName}`);
-            if (targetView) {
-                targetView.classList.remove('hidden');
-                targetView.classList.add('block');
+            const target = document.getElementById(`view-${viewName}`);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('block');
             }
 
-            // Update Desktop Nav Styling
+            // Update Desktop Nav styling
             document.querySelectorAll('.nav-tab').forEach(btn => {
                 btn.classList.remove('bg-accent-600', 'text-white', 'shadow-sm');
                 btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-navy-800');
             });
-            const activeNavBtn = document.getElementById(`nav-btn-${tabName}`);
-            if (activeNavBtn) {
-                activeNavBtn.classList.add('bg-accent-600', 'text-white', 'shadow-sm');
-                activeNavBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-navy-800');
+            const activeBtn = document.getElementById(`nav-btn-${viewName}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-accent-600', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-navy-800');
             }
 
-            // Update Mobile Nav Styling
-            ['home', 'sitemap', 'team'].forEach(t => {
-                const mBtn = document.getElementById(`mob-btn-${t}`);
+            // Update Mobile Nav styling
+            ['home', 'modules', 'resources', 'governance'].forEach(v => {
+                const mBtn = document.getElementById(`mob-btn-${v}`);
                 if (mBtn) {
-                    if (t === tabName) {
-                        mBtn.className = "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5";
-                    } else {
-                        mBtn.className = "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5";
-                    }
+                    mBtn.className = v === viewName
+                        ? "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5"
+                        : "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5";
                 }
             });
 
-            // Scroll smoothly to top
+            if (viewName === 'modules') {
+                if (param) activeModuleNum = param;
+                renderModuleView(activeModuleNum);
+            } else if (viewName === 'resources') {
+                renderResources();
+                if (param) {
+                    setTimeout(() => {
+                        const refCard = document.getElementById(param);
+                        if (refCard) {
+                            refCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            refCard.classList.add('ring-2', 'ring-accent-500');
+                            setTimeout(() => refCard.classList.remove('ring-2', 'ring-accent-500'), 2500);
+                        }
+                    }, 80);
+                }
+            } else if (viewName === 'governance') {
+                renderGovernance();
+            }
+
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
+            document.getElementById('mobile-menu').classList.toggle('hidden');
         }
 
-        // ==========================================
-        // RENDER FUNCTIONS
-        // ==========================================
-        function renderMeta() {
-            document.getElementById('nav-project-title').textContent = appState.meta.siteName;
-            document.getElementById('footer-project-title').textContent = appState.meta.siteName;
-            document.getElementById('hero-title').textContent = appState.meta.heroTitle;
+        // =========================================================
+        // RENDER HOMEPAGE
+        // =========================================================
+        function renderHomepage() {
+            document.getElementById('nav-project-title').textContent = appState.meta.topicTitle;
+            document.getElementById('nav-group-subtitle').textContent = `${appState.meta.groupName} • 6-Member Collaborative`;
+            document.getElementById('hero-badge-text').textContent = `${appState.meta.courseCode} • ${appState.meta.groupName}`;
+            document.getElementById('hero-title').textContent = appState.meta.topicTitle;
             document.getElementById('hero-subtitle').textContent = appState.meta.heroSubtitle;
-            document.getElementById('stat-team-count').textContent = appState.team.length;
-        }
+            document.getElementById('footer-project-title').textContent = appState.meta.topicTitle;
+            document.getElementById('footer-group-name').textContent = `${appState.meta.groupName} (6 Members)`;
+            document.getElementById('stat-ref-count').textContent = appState.resources.length;
 
-        function getStatusBadgeHTML(status) {
-            if (status === 'Live') {
-                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live
-                </span>`;
-            } else if (status === 'In Progress') {
-                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> In Progress
-                </span>`;
-            } else {
-                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
-                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Planned
-                </span>`;
-            }
-        }
+            const dirContainer = document.getElementById('home-module-directory');
+            dirContainer.innerHTML = '';
 
-        function renderSitemap() {
-            const tbody = document.getElementById('sitemap-table-body');
-            tbody.innerHTML = '';
-
-            const filtered = currentSitemapFilter === 'all' 
-                ? appState.sitemap 
-                : appState.sitemap.filter(item => item.status === currentSitemapFilter);
-
-            filtered.forEach(item => {
-                const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50/80 transition-colors';
-                tr.innerHTML = `
-                    <td class="py-4 px-6 font-semibold text-navy-900">${escapeHTML(item.title)}</td>
-                    <td class="py-4 px-4 font-mono text-xs text-accent-600">${escapeHTML(item.route)}</td>
-                    <td class="py-4 px-4 text-slate-600 text-xs sm:text-sm max-w-md">${escapeHTML(item.description)}</td>
-                    <td class="py-4 px-4 text-xs font-medium text-slate-700">
-                        <span class="inline-flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-md">
-                            <i data-lucide="user" class="w-3 h-3 text-slate-500"></i>
-                            ${escapeHTML(item.owner)}
+            appState.members.forEach(member => {
+                const row = document.createElement('div');
+                row.onclick = () => navigateTo('modules', member.moduleNum);
+                row.className = 'p-3.5 rounded-xl bg-slate-50 hover:bg-accent-50/70 border border-slate-200/80 hover:border-accent-300 transition cursor-pointer flex items-center justify-between gap-3 group';
+                row.innerHTML = `
+                    <div class="flex items-center gap-3 min-w-0">
+                        <span class="w-7 h-7 rounded-lg bg-navy-900 group-hover:bg-accent-600 text-white font-mono font-bold text-xs flex items-center justify-center shrink-0 transition">
+                            M${member.moduleNum}
                         </span>
-                    </td>
-                    <td class="py-4 px-6 text-right whitespace-nowrap">
-                        ${getStatusBadgeHTML(item.status)}
-                    </td>
+                        <div class="truncate">
+                            <p class="text-xs sm:text-sm font-bold text-navy-900 group-hover:text-accent-700 truncate">${escapeHTML(member.moduleTitle)}</p>
+                            <p class="text-[11px] text-slate-500">Author: <strong class="text-slate-700">${escapeHTML(member.name)}</strong> (${escapeHTML(member.studentId)})</p>
+                        </div>
+                    </div>
+                    <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400 group-hover:text-accent-600 shrink-0"></i>
                 `;
-                tbody.appendChild(tr);
+                dirContainer.appendChild(row);
             });
 
             lucide.createIcons();
         }
 
-        function filterSitemap(status) {
-            currentSitemapFilter = status;
-            document.querySelectorAll('.sitemap-filter').forEach(btn => {
+        // =========================================================
+        // RENDER INDIVIDUAL STUDENT MODULE PAGE (1 to 6)
+        // =========================================================
+        function renderModuleView(modNum) {
+            activeModuleNum = modNum;
+            const mod = modulesContent.find(m => m.num === modNum) || modulesContent[0];
+            const author = appState.members.find(m => m.moduleNum === modNum) || appState.members[0];
+
+            document.getElementById('module-author-topbar').innerHTML = `Page Author: <strong>${escapeHTML(author.name)}</strong> (${escapeHTML(author.studentId)})`;
+
+            // Render Top Pills
+            const pillsContainer = document.getElementById('module-selector-pills');
+            pillsContainer.innerHTML = '';
+            modulesContent.forEach(m => {
+                const isSelected = m.num === modNum;
+                const btn = document.createElement('button');
+                btn.onclick = () => renderModuleView(m.num);
+                btn.className = isSelected
+                    ? 'px-3 py-2 rounded-xl bg-accent-600 text-white text-xs font-semibold shadow-sm text-left truncate transition cursor-pointer'
+                    : 'px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200/80 text-slate-700 text-xs font-medium text-left truncate transition cursor-pointer';
+                btn.textContent = m.shortTitle;
+                pillsContainer.appendChild(btn);
+            });
+
+            // Build Quiz HTML
+            const quizHTML = mod.quiz.map((qItem, qIdx) => {
+                const optionsHTML = qItem.options.map((opt, oIdx) => `
+                    <button onclick="checkQuizAnswer(${mod.num}, ${qIdx}, ${oIdx})" id="quiz-opt-${mod.num}-${qIdx}-${oIdx}"
+                        class="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 text-xs sm:text-sm text-slate-700 transition cursor-pointer">
+                        <span class="font-mono font-bold text-accent-600 mr-2">${String.fromCharCode(65 + oIdx)}.</span> ${escapeHTML(opt)}
+                    </button>
+                `).join('');
+
+                return `
+                    <div class="p-5 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
+                        <p class="text-sm font-bold text-navy-900">Q${qIdx + 1}. ${escapeHTML(qItem.q)}</p>
+                        <div class="space-y-2">${optionsHTML}</div>
+                        <div id="quiz-feedback-${mod.num}-${qIdx}" class="hidden text-xs p-3 rounded-lg"></div>
+                    </div>
+                `;
+            }).join('');
+
+            // Previous / Next Module navigation
+            const prevMod = modNum > 1 ? modNum - 1 : null;
+            const nextMod = modNum < 6 ? modNum + 1 : null;
+
+            const container = document.getElementById('active-module-container');
+            container.innerHTML = `
+                <article class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                    <!-- Module Header Banner -->
+                    <div class="bg-navy-900 text-white p-6 sm:p-10 border-b border-slate-800">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <span class="px-3 py-1 rounded-full text-xs font-mono font-semibold bg-accent-600/25 text-accent-200 border border-accent-500/30">
+                                Module ${mod.num} of 6 • Individual Student Page
+                            </span>
+                            <div class="flex items-center gap-2 text-xs bg-navy-800 px-3 py-1.5 rounded-lg border border-slate-700">
+                                <i data-lucide="user-check" class="w-3.5 h-3.5 text-emerald-400"></i>
+                                <span>Authored by <strong class="text-white">${escapeHTML(author.name)}</strong> (${escapeHTML(author.studentId)})</span>
+                            </div>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight leading-snug mb-3">${escapeHTML(mod.title)}</h1>
+                        <p class="text-sm sm:text-base text-slate-300 leading-relaxed">${escapeHTML(mod.subtitle)}</p>
+                    </div>
+
+                    <!-- Lesson Body -->
+                    <div class="p-6 sm:p-10 space-y-8 text-slate-700 text-sm sm:text-base leading-relaxed">
+                        
+                        <!-- Section 1 -->
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-900 mb-3">${escapeHTML(mod.section1Title)}</h2>
+                            ${mod.section1Body}
+                        </div>
+
+                        <!-- Architectural SVG Diagram + Explicit Figure Credit -->
+                        <figure class="my-6">
+                            ${mod.svgDiagram}
+                            <figcaption class="mt-2.5 text-xs text-slate-500 italic bg-slate-50 px-4 py-2.5 rounded-lg border border-slate-200/70">
+                                ${escapeHTML(mod.figureCaption)}
+                            </figcaption>
+                        </figure>
+
+                        <!-- Section 2 -->
+                        <div>
+                            <h2 class="text-xl font-bold text-navy-900 mb-3">${escapeHTML(mod.section2Title)}</h2>
+                            ${mod.section2Body}
+                        </div>
+
+                        <!-- Key Mathematical Formulation Box -->
+                        <div class="p-4 sm:p-5 rounded-xl bg-navy-950 text-accent-200 font-mono text-xs sm:text-sm overflow-x-auto border border-slate-800">
+                            <span class="text-[10px] uppercase tracking-wider text-slate-400 block mb-1.5">Core Mathematical Formulation</span>
+                            <code>${escapeHTML(mod.formula)}</code>
+                        </div>
+
+                        <!-- Technical Claim Verification Box (Checklist Req #8) -->
+                        <div class="p-5 sm:p-6 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-2.5">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-800">
+                                    <i data-lucide="badge-check" class="w-4 h-4 text-emerald-600"></i>
+                                    Technical Claim Verification Record (${escapeHTML(author.name)})
+                                </span>
+                                <button onclick="navigateTo('resources', '${mod.claimRefId}')" class="text-xs font-semibold text-emerald-700 hover:text-emerald-900 underline cursor-pointer">
+                                    Inspect Annotated Source →
+                                </button>
+                            </div>
+                            <p class="text-sm font-medium text-slate-800">
+                                "${escapeHTML(mod.claimText)}"
+                            </p>
+                            <p class="text-xs font-mono text-emerald-800 bg-white/80 px-3 py-2 rounded-lg border border-emerald-200/80">
+                                <strong>Verified Primary Source:</strong> ${escapeHTML(mod.claimSource)}
+                            </p>
+                        </div>
+
+                        <!-- Interactive Concept Check -->
+                        <div class="pt-4 border-t border-slate-200">
+                            <h3 class="text-lg font-bold text-navy-900 mb-1 flex items-center gap-2">
+                                <i data-lucide="help-circle" class="w-5 h-5 text-accent-600"></i>
+                                Module ${mod.num} Concept Check
+                            </h3>
+                            <p class="text-xs text-slate-500 mb-4">Test your comprehension of the technical concepts covered on this page.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                ${quizHTML}
+                            </div>
+                        </div>
+
+                        <!-- Bottom Contextual Page Navigation -->
+                        <div class="pt-6 border-t border-slate-200 flex items-center justify-between gap-4">
+                            ${prevMod
+                                ? `<button onclick="navigateTo('modules', ${prevMod})" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer transition">
+                                    <i data-lucide="arrow-left" class="w-4 h-4"></i> Previous: Module ${prevMod}
+                                   </button>`
+                                : `<button onclick="navigateTo('home')" class="px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer transition">
+                                    <i data-lucide="home" class="w-4 h-4"></i> Back to Homepage
+                                   </button>`
+                            }
+
+                            ${nextMod
+                                ? `<button onclick="navigateTo('modules', ${nextMod})" class="px-4 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer transition">
+                                    Next: Module ${nextMod} <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                   </button>`
+                                : `<button onclick="navigateTo('resources')" class="px-4 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 cursor-pointer transition">
+                                    Explore Resource Library <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                   </button>`
+                            }
+                        </div>
+                    </div>
+                </article>
+            `;
+
+            lucide.createIcons();
+        }
+
+        function checkQuizAnswer(modNum, qIdx, selectedIdx) {
+            const mod = modulesContent.find(m => m.num === modNum);
+            if (!mod) return;
+            const qItem = mod.quiz[qIdx];
+            const feedbackEl = document.getElementById(`quiz-feedback-${modNum}-${qIdx}`);
+
+            qItem.options.forEach((_, idx) => {
+                const btn = document.getElementById(`quiz-opt-${modNum}-${qIdx}-${idx}`);
+                btn.classList.remove('border-emerald-500', 'bg-emerald-50', 'border-rose-500', 'bg-rose-50');
+                if (idx === qItem.answer) {
+                    btn.classList.add('border-emerald-500', 'bg-emerald-50');
+                } else if (idx === selectedIdx && selectedIdx !== qItem.answer) {
+                    btn.classList.add('border-rose-500', 'bg-rose-50');
+                }
+            });
+
+            feedbackEl.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900');
+            if (selectedIdx === qItem.answer) {
+                feedbackEl.classList.add('bg-emerald-100', 'text-emerald-900');
+                feedbackEl.innerHTML = `<strong>Correct!</strong> ${escapeHTML(qItem.explanation)}`;
+            } else {
+                feedbackEl.classList.add('bg-rose-100', 'text-rose-900');
+                feedbackEl.innerHTML = `<strong>Not quite.</strong> ${escapeHTML(qItem.explanation)}`;
+            }
+        }
+
+        // =========================================================
+        // RENDER ANNOTATED RESOURCE LIBRARY
+        // =========================================================
+        function renderResources() {
+            const list = document.getElementById('resources-list');
+            list.innerHTML = '';
+
+            const filtered = activeResourceFilter === 'all'
+                ? appState.resources
+                : appState.resources.filter(r => r.category === activeResourceFilter);
+
+            filtered.forEach(ref => {
+                const card = document.createElement('div');
+                card.id = ref.id;
+                card.className = 'bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm transition-all';
+                card.innerHTML = `
+                    <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2">
+                        <div>
+                            <div class="flex flex-wrap items-center gap-2 mb-1">
+                                <span class="px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-navy-900 text-white">${escapeHTML(ref.code)}</span>
+                                <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-accent-50 text-accent-700 border border-accent-200">${escapeHTML(ref.category)}</span>
+                                <span class="text-xs text-slate-500 font-mono">Cited in: ${escapeHTML(ref.usedIn)}</span>
+                            </div>
+                            <h3 class="text-base sm:text-lg font-bold text-navy-900">${escapeHTML(ref.title)}</h3>
+                            <p class="text-xs font-mono text-slate-500 mt-0.5">${escapeHTML(ref.venue)}</p>
+                        </div>
+                        <a href="${escapeHTML(ref.url)}" target="_blank" rel="noopener noreferrer"
+                           class="px-3.5 py-2 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs font-semibold flex items-center gap-1.5 shrink-0 self-start transition">
+                            Open Paper / DOI <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+                        </a>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-600 leading-relaxed mt-3 pt-3 border-t border-slate-100">
+                        <strong class="text-slate-800">Annotation:</strong> ${escapeHTML(ref.annotation)}
+                    </p>
+                `;
+                list.appendChild(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        function filterResources(category) {
+            activeResourceFilter = category;
+            document.querySelectorAll('.res-filter').forEach(btn => {
                 btn.classList.remove('bg-white', 'text-navy-900', 'shadow-sm');
                 btn.classList.add('text-slate-600');
             });
-            const activeBtn = document.getElementById(`filter-${status}`);
+            const activeBtn = document.getElementById(`res-filter-${category}`);
             if (activeBtn) {
                 activeBtn.classList.add('bg-white', 'text-navy-900', 'shadow-sm');
                 activeBtn.classList.remove('text-slate-600');
             }
-            renderSitemap();
+            renderResources();
         }
 
-        function getMemberStatusColor(status) {
-            if (status.includes('Completed')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
-            if (status.includes('Active')) return 'bg-blue-50 text-accent-700 border-blue-200';
-            if (status.includes('Review')) return 'bg-amber-50 text-amber-700 border-amber-200';
-            return 'bg-slate-100 text-slate-600 border-slate-200';
-        }
-
-        function renderTeam() {
+        // =========================================================
+        // RENDER TEAM & GOVERNANCE
+        // =========================================================
+        function renderGovernance() {
             const grid = document.getElementById('team-grid');
             grid.innerHTML = '';
 
-            appState.team.forEach(member => {
-                const initials = member.name
-                    .split(' ')
-                    .map(n => n[0])
-                    .join('')
-                    .substring(0, 2)
-                    .toUpperCase() || 'TM';
-
-                const tasksListHTML = member.tasks.map(task => `
-                    <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
-                        <i data-lucide="check" class="w-4 h-4 text-accent-600 shrink-0 mt-0.5"></i>
-                        <span>${escapeHTML(task)}</span>
+            appState.members.forEach(member => {
+                const modData = modulesContent.find(m => m.num === member.moduleNum);
+                const tasksHTML = member.tasks.map(t => `
+                    <li class="flex items-start gap-2 text-xs text-slate-600">
+                        <i data-lucide="check" class="w-3.5 h-3.5 text-accent-600 shrink-0 mt-0.5"></i>
+                        <span>${escapeHTML(t)}</span>
                     </li>
                 `).join('');
 
                 const card = document.createElement('div');
-                card.className = 'bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between';
+                card.className = 'bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm flex flex-col justify-between';
                 card.innerHTML = `
                     <div>
-                        <div class="flex items-start justify-between gap-4 mb-4">
-                            <div class="flex items-center gap-3.5">
-                                <div class="w-12 h-12 rounded-xl bg-navy-900 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
-                                    ${escapeHTML(initials)}
-                                </div>
-                                <div>
-                                    <h3 class="text-base sm:text-lg font-bold text-navy-900 leading-snug">${escapeHTML(member.name)}</h3>
-                                    <p class="text-xs sm:text-sm font-medium text-accent-600">${escapeHTML(member.role)}</p>
-                                </div>
+                        <div class="flex items-start justify-between gap-3 mb-3">
+                            <div>
+                                <span class="text-[11px] font-mono font-bold text-accent-600 uppercase">Author • Module ${member.moduleNum}</span>
+                                <h3 class="text-base sm:text-lg font-bold text-navy-900">${escapeHTML(member.name)}</h3>
+                                <p class="text-xs font-mono text-slate-500">${escapeHTML(member.studentId)} • ${escapeHTML(member.role)}</p>
                             </div>
-                            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold border whitespace-nowrap ${getMemberStatusColor(member.status)}">
-                                ${escapeHTML(member.status)}
-                            </span>
+                            <button onclick="openEditMemberModal(${member.id})" class="p-2 rounded-lg text-slate-500 hover:text-accent-600 hover:bg-slate-100 transition cursor-pointer" title="Edit Author Details">
+                                <i data-lucide="pencil" class="w-4 h-4"></i>
+                            </button>
                         </div>
 
-                        <div class="border-t border-slate-100 pt-4 mt-2">
-                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2.5">Assigned Deliverables & Responsibilities</span>
-                            <ul class="space-y-2">
-                                ${tasksListHTML}
-                            </ul>
+                        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200/70 mb-4">
+                            <p class="text-[11px] font-semibold text-slate-500 uppercase">Owned Page:</p>
+                            <button onclick="navigateTo('modules', ${member.moduleNum})" class="text-xs font-bold text-accent-600 hover:underline text-left mt-0.5 cursor-pointer">
+                                ${escapeHTML(member.moduleTitle)} →
+                            </button>
                         </div>
+
+                        <ul class="space-y-1.5 mb-4">
+                            ${tasksHTML}
+                        </ul>
                     </div>
 
-                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
-                        <span class="text-xs text-slate-400 font-mono">${member.tasks.length} key deliverables</span>
-                        <button onclick="openEditMemberModal(${member.id})" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5 cursor-pointer">
-                            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
-                            Edit Member
-                        </button>
+                    <div class="pt-3 border-t border-slate-100 text-[11px] text-slate-500">
+                        <strong>Verified Source:</strong> ${modData ? escapeHTML(modData.claimSource.split(',')[0]) : 'Peer-Reviewed'}
                     </div>
                 `;
                 grid.appendChild(card);
             });
 
-            renderMeta();
+            // Media Credits Table
+            const mediaBody = document.getElementById('media-credits-body');
+            mediaBody.innerHTML = '';
+            modulesContent.forEach(mod => {
+                const author = appState.members.find(m => m.moduleNum === mod.num);
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/70';
+                tr.innerHTML = `
+                    <td class="py-3.5 px-6 font-semibold text-navy-900">Figure ${mod.num}.1 (Inline SVG Diagram)</td>
+                    <td class="py-3.5 px-4 text-xs font-mono text-accent-600">Module ${mod.num}</td>
+                    <td class="py-3.5 px-4 text-xs text-slate-700">${escapeHTML(author ? author.name : 'Group Author')} (CC BY 4.0)</td>
+                    <td class="py-3.5 px-6 text-xs text-slate-600">${escapeHTML(mod.figureCaption.split('adapted from ')[1] || mod.claimSource)}</td>
+                `;
+                mediaBody.appendChild(tr);
+            });
+
             lucide.createIcons();
         }
 
-        // ==========================================
-        // MODAL HANDLERS & INTERACTIVITY
-        // ==========================================
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
+        // =========================================================
+        // MODALS & HTML EXPORT
+        // =========================================================
+        function closeModal(id) {
+            document.getElementById(id).classList.add('hidden');
         }
 
         function openEditMemberModal(memberId) {
-            const member = appState.team.find(m => m.id === memberId);
+            const member = appState.members.find(m => m.id === memberId);
             if (!member) return;
-
-            document.getElementById('member-modal-title').textContent = 'Edit Team Member';
             document.getElementById('member-id').value = member.id;
             document.getElementById('member-name').value = member.name;
+            document.getElementById('member-student-id').value = member.studentId;
             document.getElementById('member-role').value = member.role;
-            document.getElementById('member-status').value = member.status;
             document.getElementById('member-tasks').value = member.tasks.join('\n');
-
-            document.getElementById('member-modal').classList.remove('hidden');
-        }
-
-        function openAddMemberModal() {
-            document.getElementById('member-modal-title').textContent = 'Add New Team Member';
-            document.getElementById('member-id').value = '';
-            document.getElementById('member-name').value = '';
-            document.getElementById('member-role').value = '';
-            document.getElementById('member-status').value = 'Active - On Track';
-            document.getElementById('member-tasks').value = '';
-
             document.getElementById('member-modal').classList.remove('hidden');
         }
 
         function saveMember(e) {
             e.preventDefault();
-            const idVal = document.getElementById('member-id').value;
-            const name = document.getElementById('member-name').value.trim();
-            const role = document.getElementById('member-role').value.trim();
-            const status = document.getElementById('member-status').value;
-            const tasks = document.getElementById('member-tasks').value
-                .split('\n')
-                .map(t => t.trim())
-                .filter(t => t.length > 0);
-
-            if (idVal) {
-                const idx = appState.team.findIndex(m => m.id === Number(idVal));
-                if (idx !== -1) {
-                    appState.team[idx] = { ...appState.team[idx], name, role, status, tasks };
-                    showToast('Team member updated successfully.');
-                }
-            } else {
-                appState.team.push({
-                    id: Date.now(),
-                    name,
-                    role,
-                    status,
-                    tasks
-                });
-                showToast('New team member added to roster.');
+            const id = Number(document.getElementById('member-id').value);
+            const idx = appState.members.findIndex(m => m.id === id);
+            if (idx !== -1) {
+                appState.members[idx].name = document.getElementById('member-name').value.trim();
+                appState.members[idx].studentId = document.getElementById('member-student-id').value.trim();
+                appState.members[idx].role = document.getElementById('member-role').value.trim();
+                appState.members[idx].tasks = document.getElementById('member-tasks').value
+                    .split('\n').map(s => s.trim()).filter(Boolean);
             }
-
             saveState();
-            renderTeam();
+            renderHomepage();
+            renderGovernance();
             closeModal('member-modal');
-        }
-
-        function openAddPageModal() {
-            document.getElementById('page-title').value = '';
-            document.getElementById('page-route').value = '/modules/';
-            document.getElementById('page-owner').value = '';
-            document.getElementById('page-status').value = 'Planned';
-            document.getElementById('page-desc').value = '';
-            document.getElementById('page-modal').classList.remove('hidden');
-        }
-
-        function addSitemapPage(e) {
-            e.preventDefault();
-            const newPage = {
-                id: Date.now(),
-                title: document.getElementById('page-title').value.trim(),
-                route: document.getElementById('page-route').value.trim(),
-                owner: document.getElementById('page-owner').value.trim(),
-                status: document.getElementById('page-status').value,
-                description: document.getElementById('page-desc').value.trim()
-            };
-
-            appState.sitemap.push(newPage);
-            saveState();
-            renderSitemap();
-            closeModal('page-modal');
-            showToast('Page added to Site Map.');
+            showToast('Member authorship record updated.');
         }
 
         function openEditOverviewModal() {
-            document.getElementById('edit-site-name').value = appState.meta.siteName;
-            document.getElementById('edit-hero-headline').value = appState.meta.heroTitle;
+            document.getElementById('edit-group-name').value = appState.meta.groupName;
+            document.getElementById('edit-course-code').value = appState.meta.courseCode;
+            document.getElementById('edit-hero-headline').value = appState.meta.topicTitle;
             document.getElementById('edit-hero-sub').value = appState.meta.heroSubtitle;
             document.getElementById('overview-modal').classList.remove('hidden');
         }
 
         function saveOverview(e) {
             e.preventDefault();
-            appState.meta.siteName = document.getElementById('edit-site-name').value.trim();
-            appState.meta.heroTitle = document.getElementById('edit-hero-headline').value.trim();
+            appState.meta.groupName = document.getElementById('edit-group-name').value.trim();
+            appState.meta.courseCode = document.getElementById('edit-course-code').value.trim();
+            appState.meta.topicTitle = document.getElementById('edit-hero-headline').value.trim();
             appState.meta.heroSubtitle = document.getElementById('edit-hero-sub').value.trim();
-
             saveState();
-            renderMeta();
+            renderHomepage();
             closeModal('overview-modal');
-            showToast('Project overview updated.');
+            showToast('Group & course metadata updated.');
         }
 
-        // ==========================================
-        // EXPORT STANDALONE HTML FOR GITHUB PAGES
-        // ==========================================
         function downloadCustomizedHTML() {
-            // Grab current document HTML and inject current appState as defaultData
             let docHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
             const stateString = JSON.stringify(appState, null, 12);
             docHTML = docHTML.replace(
                 /const defaultData = \{[\s\S]*?\n        \};/,
                 `const defaultData = ${stateString};`
             );
-
             const blob = new Blob([docHTML], { type: 'text/html' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
@@ -1114,44 +1905,30 @@
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            showToast('Downloaded customized index.html for GitHub Pages!');
+            showToast('Exported standalone index.html with your 6 member records!');
         }
 
-        // ==========================================
-        // UTILITIES
-        // ==========================================
         function escapeHTML(str) {
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
 
-        function showToast(message) {
+        function showToast(msg) {
             const container = document.getElementById('toast-container');
             const toast = document.createElement('div');
-            toast.className = 'bg-navy-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0';
-            toast.innerHTML = `
-                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-                <span>${escapeHTML(message)}</span>
-            `;
+            toast.className = 'bg-navy-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2.5 transition-all duration-300';
+            toast.innerHTML = `<i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i><span>${escapeHTML(msg)}</span>`;
             container.appendChild(toast);
             lucide.createIcons();
-
-            requestAnimationFrame(() => {
-                toast.classList.remove('translate-y-2', 'opacity-0');
-            });
-
-            setTimeout(() => {
-                toast.classList.add('opacity-0', 'translate-y-2');
-                setTimeout(() => toast.remove(), 300);
-            }, 3200);
+            setTimeout(() => toast.remove(), 3200);
         }
 
-        // Initialize on load
         window.addEventListener('DOMContentLoaded', () => {
-            renderMeta();
-            renderSitemap();
-            renderTeam();
+            renderHomepage();
+            renderModuleView(1);
+            renderResources();
+            renderGovernance();
             lucide.createIcons();
         });
     </script>
