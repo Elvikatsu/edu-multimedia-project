@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduPortal | Public Educational Project & Architecture</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#080d1a',
+                        },
+                        canvas: '#f8fafc',
+                        accent: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-canvas text-slate-800 font-sans antialiased min-h-screen flex flex-col selection:bg-accent-600 selection:text-white">
+
+    <!-- Toast Notification Container (Replaces alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Top Navigation Bar -->
+    <header class="sticky top-0 z-40 bg-navy-900/95 backdrop-blur-md text-white border-b border-slate-800 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Brand / Project Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="switchTab('home')">
+                    <div class="w-9 h-9 rounded-lg bg-accent-600 flex items-center justify-center shadow-inner">
+                        <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
+                    </div>
+                    <div>
+                        <span id="nav-project-title" class="font-bold text-lg tracking-tight block leading-none">OpenEdu Initiative</span>
+                        <span class="text-[11px] font-mono text-slate-400 tracking-wider uppercase">Phase 1: Architecture</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex items-center space-x-2" aria-label="Main Navigation">
+                    <button onclick="switchTab('home')" id="nav-btn-home" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-2 bg-accent-600 text-white shadow-sm">
+                        <i data-lucide="home" class="w-4 h-4"></i>
+                        Homepage
+                    </button>
+                    <button onclick="switchTab('sitemap')" id="nav-btn-sitemap" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
+                        <i data-lucide="network" class="w-4 h-4"></i>
+                        Site Map
+                    </button>
+                    <button onclick="switchTab('team')" id="nav-btn-team" class="nav-tab px-4 py-2 rounded-lg text-sm font-medium text-slate-300 hover:text-white hover:bg-navy-800 transition-all duration-200 flex items-center gap-2">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                        Member Responsibilities
+                    </button>
+                </nav>
+
+                <!-- Quick Action / GitHub Pages Status Badge -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-300 border border-emerald-500/20">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        GitHub Pages Ready
+                    </span>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex md:hidden">
+                    <button onclick="toggleMobileMenu()" type="button" class="p-2 rounded-lg text-slate-300 hover:text-white hover:bg-navy-800 focus:outline-none" aria-label="Toggle Menu">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-navy-900 border-b border-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('home'); toggleMobileMenu();" id="mob-btn-home" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5">
+                <i data-lucide="home" class="w-4 h-4"></i>
+                Homepage
+            </button>
+            <button onclick="switchTab('sitemap'); toggleMobileMenu();" id="mob-btn-sitemap" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
+                <i data-lucide="network" class="w-4 h-4"></i>
+                Site Map
+            </button>
+            <button onclick="switchTab('team'); toggleMobileMenu();" id="mob-btn-team" class="w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5">
+                <i data-lucide="users" class="w-4 h-4"></i>
+                Member Responsibilities
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow">
+
+        <!-- ========================================== -->
+        <!-- VIEW 1: HOMEPAGE                           -->
+        <!-- ========================================== -->
+        <section id="view-home" class="view-section block">
+            <!-- Hero Banner -->
+            <div class="bg-navy-900 text-white border-b border-slate-800 relative overflow-hidden">
+                <!-- Subtle Decorative Grid Pattern -->
+                <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(#3b82f6 1px, transparent 1px); background-size: 24px 24px;"></div>
+                
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 relative z-10">
+                    <div class="max-w-3xl">
+                        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-600/20 border border-accent-500/30 text-accent-100 text-xs font-medium mb-6">
+                            <i data-lucide="book-open" class="w-3.5 h-3.5 text-accent-400"></i>
+                            <span>Public Educational Resource • Open Access</span>
+                        </div>
+                        <h1 id="hero-title" class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white leading-tight mb-6">
+                            Accessible, Structured Learning for Everyone.
+                        </h1>
+                        <p id="hero-subtitle" class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8">
+                            Welcome to our public educational portal. This platform is designed to deliver clear, interactive modules, curated study guides, and hands-on exercises—hosted openly on GitHub Pages for learners and educators worldwide.
+                        </p>
+                        
+                        <!-- Call to Action Buttons -->
+                        <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+                            <button onclick="switchTab('sitemap')" class="px-6 py-3.5 rounded-xl bg-accent-600 hover:bg-accent-500 text-white font-semibold text-sm shadow-lg shadow-accent-600/25 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="network" class="w-4 h-4"></i>
+                                Explore Curriculum Site Map
+                            </button>
+                            <button onclick="switchTab('team')" class="px-6 py-3.5 rounded-xl bg-navy-800 hover:bg-slate-700 text-white border border-slate-700 font-semibold text-sm transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i data-lucide="users" class="w-4 h-4"></i>
+                                View Team & Responsibilities
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quick Project Stats Bar -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 relative z-20">
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-blue-50 text-accent-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="layers" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-navy-900">6</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Planned Modules</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-navy-900">Phase 1</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Foundation Live</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="users" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-navy-900" id="stat-team-count">4</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Core Contributors</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-slate-200/80 flex items-center gap-4">
+                        <div class="w-11 h-11 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center shrink-0">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-navy-900">100%</p>
+                            <p class="text-xs font-medium text-slate-500 uppercase tracking-wider">Free & Open Source</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Overview & Learning Objectives -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left Column: Project Overview -->
+                    <div class="lg:col-span-7 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                        <div class="flex items-center justify-between mb-4">
+                            <span class="text-xs font-bold uppercase tracking-wider text-accent-600">About This Initiative</span>
+                            <button onclick="openEditOverviewModal()" class="text-xs font-medium text-slate-500 hover:text-accent-600 flex items-center gap-1 px-2.5 py-1 rounded-md hover:bg-slate-100 transition">
+                                <i data-lucide="edit-3" class="w-3.5 h-3.5"></i> Customize Overview
+                            </button>
+                        </div>
+                        <h2 class="text-2xl font-bold text-navy-900 mb-4">Project Overview & Pedagogical Approach</h2>
+                        <div id="overview-body" class="space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+                            <p>
+                                Educational barriers often stem from fragmented resources and paywalled content. Our goal is to construct a centralized, self-paced web portal that guides learners from foundational definitions to applied mastery.
+                            </p>
+                            <p>
+                                Currently, our team is publishing the core architecture—establishing the public homepage, comprehensive curriculum site map, and transparent contributor responsibilities—before rolling out interactive lesson modules in subsequent releases.
+                            </p>
+                        </div>
+
+                        <!-- Current Release Milestone Box -->
+                        <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-3.5">
+                            <div class="p-2 rounded-lg bg-accent-100 text-accent-700 mt-0.5">
+                                <i data-lucide="milestone" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-sm font-semibold text-navy-900">Current Release Milestone: v1.0 Foundation</h3>
+                                <p class="text-xs sm:text-sm text-slate-600 mt-1">
+                                    Includes the public landing page, full curriculum blueprint (Site Map), and contributor roster. Next milestone: Interactive Module 1 & Self-Assessment Quiz.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Core Learning Objectives -->
+                    <div class="lg:col-span-5 bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-2">Curriculum Goals</span>
+                        <h2 class="text-2xl font-bold text-navy-900 mb-5">Learning Objectives</h2>
+                        
+                        <ul class="space-y-4">
+                            <li class="flex items-start gap-3.5">
+                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">1</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-navy-900">Master Core Foundations</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Build a clear mental model of fundamental terminology, history, and core principles.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3.5">
+                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">2</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-navy-900">Apply Analytical Frameworks</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Work through guided real-world case studies and structured problem-solving exercises.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3.5">
+                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">3</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-navy-900">Verify Knowledge Retention</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Evaluate understanding using interactive checkpoints, flashcards, and summary rubrics.</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start gap-3.5">
+                                <div class="w-6 h-6 rounded-full bg-accent-50 text-accent-600 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5 border border-accent-200">4</div>
+                                <div>
+                                    <h4 class="text-sm font-semibold text-navy-900">Encourage Open Collaboration</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Enable students and peers to reference, share, and build upon open-licensed materials.</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 2: SITE MAP                           -->
+        <!-- ========================================== -->
+        <section id="view-sitemap" class="view-section hidden">
+            <!-- Section Header -->
+            <div class="bg-white border-b border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
+                                <i data-lucide="folder-tree" class="w-4 h-4"></i>
+                                Information Architecture
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Website Site Map & Content Roadmap</h1>
+                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
+                                A structural overview of all public pages, planned educational modules, URL routes, and current publication statuses.
+                            </p>
+                        </div>
+
+                        <!-- Filter Controls -->
+                        <div class="flex flex-wrap items-center gap-2 bg-slate-100 p-1.5 rounded-xl border border-slate-200/80 self-start">
+                            <button onclick="filterSitemap('all')" id="filter-all" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold bg-white text-navy-900 shadow-sm transition">
+                                All Pages
+                            </button>
+                            <button onclick="filterSitemap('Live')" id="filter-Live" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Live
+                            </button>
+                            <button onclick="filterSitemap('In Progress')" id="filter-In Progress" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-amber-500"></span> In Progress
+                            </button>
+                            <button onclick="filterSitemap('Planned')" id="filter-Planned" class="sitemap-filter px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600 hover:text-navy-900 transition flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full bg-slate-400"></span> Planned
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
+                
+                <!-- Visual Hierarchy Tree Diagram -->
+                <div class="bg-white rounded-2xl p-6 sm:p-8 border border-slate-200/80 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-lg font-bold text-navy-900 flex items-center gap-2">
+                            <i data-lucide="git-fork" class="w-5 h-5 text-accent-600"></i>
+                            Visual Navigation Hierarchy
+                        </h2>
+                        <span class="text-xs font-mono text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">root: /index.html</span>
+                    </div>
+
+                    <!-- Tree Structure -->
+                    <div class="overflow-x-auto pb-2">
+                        <div class="min-w-[640px] flex flex-col items-center">
+                            <!-- Root Node -->
+                            <div class="px-5 py-3 rounded-xl bg-navy-900 text-white font-semibold text-sm shadow-md border border-navy-800 flex items-center gap-2.5">
+                                <i data-lucide="globe" class="w-4 h-4 text-accent-400"></i>
+                                <span>Public Educational Portal (Home)</span>
+                                <span class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Live</span>
+                            </div>
+
+                            <!-- Vertical Connector -->
+                            <div class="w-0.5 h-6 bg-slate-300"></div>
+
+                            <!-- Horizontal Branch Bar -->
+                            <div class="w-4/5 h-0.5 bg-slate-300"></div>
+
+                            <!-- Primary Branches (3 Columns) -->
+                            <div class="w-full grid grid-cols-3 gap-6">
+                                <!-- Branch 1: Core Meta Pages -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-0.5 h-6 bg-slate-300"></div>
+                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">1. Portal Core</span>
+                                        <p class="text-sm font-bold text-navy-900">Project & Governance</p>
+                                        <div class="mt-3 space-y-2 text-left">
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">1.1 Homepage</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">1.2 Site Map</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">1.3 Team Roster</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-emerald-100 text-emerald-800 font-semibold text-[10px]">Live</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Branch 2: Learning Modules -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-0.5 h-6 bg-slate-300"></div>
+                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">2. Curriculum</span>
+                                        <p class="text-sm font-bold text-navy-900">Educational Modules</p>
+                                        <div class="mt-3 space-y-2 text-left">
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">2.1 Module 1: Foundations</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold text-[10px]">In Progress</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">2.2 Module 2: Core Methods</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">2.3 Module 3: Case Studies</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Branch 3: Interactive & Resources -->
+                                <div class="flex flex-col items-center">
+                                    <div class="w-0.5 h-6 bg-slate-300"></div>
+                                    <div class="w-full p-4 rounded-xl bg-slate-50 border border-slate-200 text-center">
+                                        <span class="text-xs font-bold uppercase tracking-wider text-accent-600 block mb-1">3. Practice & Tools</span>
+                                        <p class="text-sm font-bold text-navy-900">Student Resources</p>
+                                        <div class="mt-3 space-y-2 text-left">
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">3.1 Self-Check Quizzes</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 font-semibold text-[10px]">In Progress</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">3.2 Glossary & References</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
+                                            </div>
+                                            <div class="p-2 rounded-lg bg-white border border-slate-200/80 text-xs flex items-center justify-between">
+                                                <span class="font-medium text-slate-700">3.3 Downloadable Guides</span>
+                                                <span class="px-1.5 py-0.5 rounded bg-slate-200 text-slate-700 font-semibold text-[10px]">Planned</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detailed Structured Directory Table -->
+                <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                    <div class="p-6 border-b border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-navy-900">Detailed Page Directory</h2>
+                            <p class="text-xs sm:text-sm text-slate-500">Complete breakdown of routes, owners, and planned deliverables.</p>
+                        </div>
+                        <button onclick="openAddPageModal()" class="px-4 py-2 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs font-semibold shadow-sm transition flex items-center gap-1.5 self-start sm:self-auto cursor-pointer">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Add Planned Page
+                        </button>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                                    <th class="py-3.5 px-6">Section / Page Title</th>
+                                    <th class="py-3.5 px-4">Route / Anchor</th>
+                                    <th class="py-3.5 px-4">Description & Planned Content</th>
+                                    <th class="py-3.5 px-4">Lead Owner</th>
+                                    <th class="py-3.5 px-6 text-right">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sitemap-table-body" class="divide-y divide-slate-200/80 text-sm">
+                                <!-- Populated dynamically via JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- VIEW 3: MEMBER RESPONSIBILITIES            -->
+        <!-- ========================================== -->
+        <section id="view-team" class="view-section hidden">
+            <!-- Section Header -->
+            <div class="bg-white border-b border-slate-200">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <div>
+                            <div class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-accent-600 mb-2">
+                                <i data-lucide="clipboard-check" class="w-4 h-4"></i>
+                                Project Governance & Ownership
+                            </div>
+                            <h1 class="text-2xl sm:text-3xl font-extrabold text-navy-900 tracking-tight">Team Roster & Member Responsibilities</h1>
+                            <p class="text-sm sm:text-base text-slate-600 mt-1 max-w-2xl">
+                                Clear allocation of roles, deliverables, and current progress across all project contributors. Click <strong>Edit Member</strong> on any card to customize names and tasks.
+                            </p>
+                        </div>
+
+                        <div class="flex items-center gap-3 self-start">
+                            <button onclick="openAddMemberModal()" class="px-4 py-2.5 rounded-xl bg-accent-600 hover:bg-accent-700 text-white text-xs sm:text-sm font-semibold shadow-sm transition flex items-center gap-2 cursor-pointer">
+                                <i data-lucide="user-plus" class="w-4 h-4"></i>
+                                Add Team Member
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Team Cards Grid -->
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+                <div id="team-grid" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Populated dynamically via JavaScript -->
+                </div>
+
+                <!-- Helpful GitHub Export Banner -->
+                <div class="mt-12 bg-navy-900 rounded-2xl p-6 sm:p-8 text-white flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 border border-slate-800">
+                    <div class="space-y-1.5 max-w-2xl">
+                        <div class="inline-flex items-center gap-2 text-xs font-mono text-accent-400">
+                            <i data-lucide="code-2" class="w-4 h-4"></i>
+                            <span>Ready for GitHub Pages Deployment</span>
+                        </div>
+                        <h3 class="text-lg sm:text-xl font-bold">Customized your team names or project overview?</h3>
+                        <p class="text-xs sm:text-sm text-slate-300">
+                            Any edits you make right now are saved automatically in your browser. Click below to download an updated <code class="bg-navy-800 px-1.5 py-0.5 rounded text-accent-300">index.html</code> file with your customized data baked directly into the code for GitHub!
+                        </p>
+                    </div>
+                    <button onclick="downloadCustomizedHTML()" class="px-5 py-3 rounded-xl bg-accent-600 hover:bg-accent-500 text-white text-sm font-semibold shadow-lg shadow-accent-600/20 transition flex items-center gap-2 shrink-0 cursor-pointer">
+                        <i data-lucide="download" class="w-4 h-4"></i>
+                        Export Updated index.html
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy-950 text-slate-400 border-t border-slate-800/80 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="flex items-center gap-2.5 text-sm">
+                    <i data-lucide="graduation-cap" class="w-5 h-5 text-accent-500"></i>
+                    <span class="font-semibold text-slate-200" id="footer-project-title">OpenEdu Initiative</span>
+                    <span class="text-slate-600">•</span>
+                    <span class="text-xs">Public Educational Resource</span>
+                </div>
+                
+                <div class="flex items-center gap-4 text-xs">
+                    <span class="inline-flex items-center gap-1.5 text-slate-300 bg-navy-900 px-3 py-1.5 rounded-lg border border-slate-800">
+                        <i data-lucide="github" class="w-3.5 h-3.5 text-white"></i>
+                        Hosted on <strong>GitHub Pages</strong>
+                    </span>
+                    <span class="text-slate-500">v1.0 Foundation</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ========================================== -->
+    <!-- MODAL: EDIT / ADD TEAM MEMBER              -->
+    <!-- ========================================== -->
+    <div id="member-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <h3 id="member-modal-title" class="text-lg font-bold text-navy-900">Edit Team Member</h3>
+                <button onclick="closeModal('member-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form id="member-form" onsubmit="saveMember(event)" class="mt-5 space-y-4">
+                <input type="hidden" id="member-id">
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Full Name</label>
+                        <input type="text" id="member-name" required placeholder="e.g., Alex Rivera" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Project Role</label>
+                        <input type="text" id="member-role" required placeholder="e.g., Lead Curriculum Designer" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500 focus:border-accent-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Status Badge</label>
+                    <select id="member-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-500">
+                        <option value="Active - On Track">Active - On Track</option>
+                        <option value="Completed Phase 1">Completed Phase 1</option>
+                        <option value="In Review">In Review</option>
+                        <option value="Upcoming">Upcoming</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Key Responsibilities (One per line)</label>
+                    <textarea id="member-tasks" rows="4" required placeholder="Draft homepage copy&#10;Structure site map hierarchy&#10;Coordinate GitHub Pages deployment" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
+                </div>
+
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('member-modal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: ADD PLANNED PAGE TO SITE MAP        -->
+    <!-- ========================================== -->
+    <div id="page-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-navy-900">Add Page to Site Map</h3>
+                <button onclick="closeModal('page-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="addSitemapPage(event)" class="mt-5 space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Page / Module Title</label>
+                        <input type="text" id="page-title" required placeholder="e.g., Module 4: Ethics" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">URL Route / File</label>
+                        <input type="text" id="page-route" required placeholder="e.g., /modules/ethics.html" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 font-mono text-xs focus:outline-none focus:ring-2 focus:ring-accent-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Lead Owner</label>
+                        <input type="text" id="page-owner" required placeholder="e.g., Jordan Lee" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Publication Status</label>
+                        <select id="page-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-accent-500">
+                            <option value="Live">Live</option>
+                            <option value="In Progress">In Progress</option>
+                            <option value="Planned" selected>Planned</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Brief Description</label>
+                    <textarea id="page-desc" rows="3" required placeholder="Summarize what learners will find on this page..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
+                </div>
+
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('page-modal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Add to Site Map</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- MODAL: CUSTOMIZE PROJECT OVERVIEW          -->
+    <!-- ========================================== -->
+    <div id="overview-modal" class="fixed inset-0 z-50 hidden bg-navy-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-100">
+                <h3 class="text-lg font-bold text-navy-900">Customize Project Details</h3>
+                <button onclick="closeModal('overview-modal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <form onsubmit="saveOverview(event)" class="mt-5 space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Project / Site Name</label>
+                    <input type="text" id="edit-site-name" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Hero Headline</label>
+                    <input type="text" id="edit-hero-headline" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Hero Subtitle / Mission</label>
+                    <textarea id="edit-hero-sub" rows="3" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-accent-500"></textarea>
+                </div>
+
+                <div class="pt-3 flex items-center justify-end gap-3 border-t border-slate-100">
+                    <button type="button" onclick="closeModal('overview-modal')" class="px-4 py-2 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-sm font-semibold bg-accent-600 hover:bg-accent-700 text-white shadow-sm">Apply Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // ==========================================
+        // DEFAULT DATA STATE (Easily customizable)
+        // ==========================================
+        const defaultData = {
+            meta: {
+                siteName: "OpenEdu Initiative",
+                heroTitle: "Accessible, Structured Learning for Everyone.",
+                heroSubtitle: "Welcome to our public educational portal. This platform is designed to deliver clear, interactive modules, curated study guides, and hands-on exercises—hosted openly on GitHub Pages for learners and educators worldwide."
+            },
+            sitemap: [
+                {
+                    id: 1,
+                    title: "Homepage & Project Overview",
+                    route: "/index.html#home",
+                    description: "Public landing page introducing the educational initiative, core learning objectives, and project milestones.",
+                    owner: "Project Lead",
+                    status: "Live"
+                },
+                {
+                    id: 2,
+                    title: "Curriculum Site Map",
+                    route: "/index.html#sitemap",
+                    description: "Visual hierarchy and structured directory detailing all current and upcoming educational pages.",
+                    owner: "Information Architect",
+                    status: "Live"
+                },
+                {
+                    id: 3,
+                    title: "Member Responsibilities",
+                    route: "/index.html#team",
+                    description: "Transparent team roster outlining contributor roles, deliverables, and task ownership.",
+                    owner: "Project Lead",
+                    status: "Live"
+                },
+                {
+                    id: 4,
+                    title: "Module 1: Core Foundations",
+                    route: "/modules/module-01.html",
+                    description: "Introductory lesson covering essential terminology, historical context, and baseline concepts.",
+                    owner: "Curriculum Lead",
+                    status: "In Progress"
+                },
+                {
+                    id: 5,
+                    title: "Interactive Self-Check Quiz",
+                    route: "/assessments/quiz-01.html",
+                    description: "Browser-based formative quiz with instant feedback and score explanations for Module 1.",
+                    owner: "Frontend Developer",
+                    status: "In Progress"
+                },
+                {
+                    id: 6,
+                    title: "Module 2: Applied Frameworks",
+                    route: "/modules/module-02.html",
+                    description: "Step-by-step walkthroughs of core analytical methods with annotated examples.",
+                    owner: "Curriculum Lead",
+                    status: "Planned"
+                },
+                {
+                    id: 7,
+                    title: "Module 3: Real-World Case Studies",
+                    route: "/modules/module-03.html",
+                    description: "Comparative case analyses demonstrating practical application across diverse scenarios.",
+                    owner: "Research Editor",
+                    status: "Planned"
+                },
+                {
+                    id: 8,
+                    title: "Glossary & Reference Library",
+                    route: "/resources/glossary.html",
+                    description: "Searchable index of key terms, academic citations, and downloadable PDF study sheets.",
+                    owner: "Research Editor",
+                    status: "Planned"
+                }
+            ],
+            team: [
+                {
+                    id: 101,
+                    name: "Member 1 (Placeholder Name)",
+                    role: "Project Lead & GitHub Maintainer",
+                    status: "Completed Phase 1",
+                    initials: "M1",
+                    tasks: [
+                        "Configure GitHub repository and deploy public GitHub Pages site",
+                        "Define overall project roadmap, milestones, and publication schedule",
+                        "Coordinate cross-team reviews and maintain site navigation structure"
+                    ]
+                },
+                {
+                    id: 102,
+                    name: "Member 2 (Placeholder Name)",
+                    role: "Curriculum & Content Lead",
+                    status: "Active - On Track",
+                    initials: "M2",
+                    tasks: [
+                        "Draft core learning objectives and pedagogical structure",
+                        "Author written lesson content for Module 1 and Module 2",
+                        "Design formative assessment questions and answer rubrics"
+                    ]
+                },
+                {
+                    id: 103,
+                    name: "Member 3 (Placeholder Name)",
+                    role: "UI/UX & Frontend Developer",
+                    status: "Active - On Track",
+                    initials: "M3",
+                    tasks: [
+                        "Build responsive HTML/CSS/JS templates for educational modules",
+                        "Implement interactive quizzes, visual site map, and accessibility standards",
+                        "Optimize mobile layout and cross-browser compatibility"
+                    ]
+                },
+                {
+                    id: 104,
+                    name: "Member 4 (Placeholder Name)",
+                    role: "Research & Quality Assurance Editor",
+                    status: "In Review",
+                    initials: "M4",
+                    tasks: [
+                        "Verify factual accuracy, citations, and open-access licensing",
+                        "Compile the glossary of key terms and downloadable study guides",
+                        "Test all links, interactive widgets, and readability across devices"
+                    ]
+                }
+            ]
+        };
+
+        // Load state from localStorage or fallback to defaultData
+        let appState = JSON.parse(localStorage.getItem('eduPortalState')) || JSON.parse(JSON.stringify(defaultData));
+        let currentSitemapFilter = 'all';
+
+        function saveState() {
+            localStorage.setItem('eduPortalState', JSON.stringify(appState));
+        }
+
+        // ==========================================
+        // NAVIGATION & TAB SWITCHING
+        // ==========================================
+        function switchTab(tabName) {
+            // Hide all views
+            document.querySelectorAll('.view-section').forEach(section => {
+                section.classList.add('hidden');
+                section.classList.remove('block');
+            });
+
+            // Show target view
+            const targetView = document.getElementById(`view-${tabName}`);
+            if (targetView) {
+                targetView.classList.remove('hidden');
+                targetView.classList.add('block');
+            }
+
+            // Update Desktop Nav Styling
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('bg-accent-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-300', 'hover:text-white', 'hover:bg-navy-800');
+            });
+            const activeNavBtn = document.getElementById(`nav-btn-${tabName}`);
+            if (activeNavBtn) {
+                activeNavBtn.classList.add('bg-accent-600', 'text-white', 'shadow-sm');
+                activeNavBtn.classList.remove('text-slate-300', 'hover:text-white', 'hover:bg-navy-800');
+            }
+
+            // Update Mobile Nav Styling
+            ['home', 'sitemap', 'team'].forEach(t => {
+                const mBtn = document.getElementById(`mob-btn-${t}`);
+                if (mBtn) {
+                    if (t === tabName) {
+                        mBtn.className = "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium bg-accent-600 text-white flex items-center gap-2.5";
+                    } else {
+                        mBtn.className = "w-full text-left px-3 py-2.5 rounded-lg text-sm font-medium text-slate-300 hover:bg-navy-800 hover:text-white flex items-center gap-2.5";
+                    }
+                }
+            });
+
+            // Scroll smoothly to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ==========================================
+        // RENDER FUNCTIONS
+        // ==========================================
+        function renderMeta() {
+            document.getElementById('nav-project-title').textContent = appState.meta.siteName;
+            document.getElementById('footer-project-title').textContent = appState.meta.siteName;
+            document.getElementById('hero-title').textContent = appState.meta.heroTitle;
+            document.getElementById('hero-subtitle').textContent = appState.meta.heroSubtitle;
+            document.getElementById('stat-team-count').textContent = appState.team.length;
+        }
+
+        function getStatusBadgeHTML(status) {
+            if (status === 'Live') {
+                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Live
+                </span>`;
+            } else if (status === 'In Progress') {
+                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span> In Progress
+                </span>`;
+            } else {
+                return `<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600 border border-slate-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-slate-400"></span> Planned
+                </span>`;
+            }
+        }
+
+        function renderSitemap() {
+            const tbody = document.getElementById('sitemap-table-body');
+            tbody.innerHTML = '';
+
+            const filtered = currentSitemapFilter === 'all' 
+                ? appState.sitemap 
+                : appState.sitemap.filter(item => item.status === currentSitemapFilter);
+
+            filtered.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.className = 'hover:bg-slate-50/80 transition-colors';
+                tr.innerHTML = `
+                    <td class="py-4 px-6 font-semibold text-navy-900">${escapeHTML(item.title)}</td>
+                    <td class="py-4 px-4 font-mono text-xs text-accent-600">${escapeHTML(item.route)}</td>
+                    <td class="py-4 px-4 text-slate-600 text-xs sm:text-sm max-w-md">${escapeHTML(item.description)}</td>
+                    <td class="py-4 px-4 text-xs font-medium text-slate-700">
+                        <span class="inline-flex items-center gap-1.5 bg-slate-100 px-2.5 py-1 rounded-md">
+                            <i data-lucide="user" class="w-3 h-3 text-slate-500"></i>
+                            ${escapeHTML(item.owner)}
+                        </span>
+                    </td>
+                    <td class="py-4 px-6 text-right whitespace-nowrap">
+                        ${getStatusBadgeHTML(item.status)}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            lucide.createIcons();
+        }
+
+        function filterSitemap(status) {
+            currentSitemapFilter = status;
+            document.querySelectorAll('.sitemap-filter').forEach(btn => {
+                btn.classList.remove('bg-white', 'text-navy-900', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById(`filter-${status}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-white', 'text-navy-900', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+            renderSitemap();
+        }
+
+        function getMemberStatusColor(status) {
+            if (status.includes('Completed')) return 'bg-emerald-50 text-emerald-700 border-emerald-200';
+            if (status.includes('Active')) return 'bg-blue-50 text-accent-700 border-blue-200';
+            if (status.includes('Review')) return 'bg-amber-50 text-amber-700 border-amber-200';
+            return 'bg-slate-100 text-slate-600 border-slate-200';
+        }
+
+        function renderTeam() {
+            const grid = document.getElementById('team-grid');
+            grid.innerHTML = '';
+
+            appState.team.forEach(member => {
+                const initials = member.name
+                    .split(' ')
+                    .map(n => n[0])
+                    .join('')
+                    .substring(0, 2)
+                    .toUpperCase() || 'TM';
+
+                const tasksListHTML = member.tasks.map(task => `
+                    <li class="flex items-start gap-2.5 text-xs sm:text-sm text-slate-600">
+                        <i data-lucide="check" class="w-4 h-4 text-accent-600 shrink-0 mt-0.5"></i>
+                        <span>${escapeHTML(task)}</span>
+                    </li>
+                `).join('');
+
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-2xl p-6 border border-slate-200/80 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between';
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-start justify-between gap-4 mb-4">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-12 h-12 rounded-xl bg-navy-900 text-white font-bold text-sm flex items-center justify-center shrink-0 shadow-sm">
+                                    ${escapeHTML(initials)}
+                                </div>
+                                <div>
+                                    <h3 class="text-base sm:text-lg font-bold text-navy-900 leading-snug">${escapeHTML(member.name)}</h3>
+                                    <p class="text-xs sm:text-sm font-medium text-accent-600">${escapeHTML(member.role)}</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full text-[11px] font-semibold border whitespace-nowrap ${getMemberStatusColor(member.status)}">
+                                ${escapeHTML(member.status)}
+                            </span>
+                        </div>
+
+                        <div class="border-t border-slate-100 pt-4 mt-2">
+                            <span class="text-[11px] font-bold uppercase tracking-wider text-slate-400 block mb-2.5">Assigned Deliverables & Responsibilities</span>
+                            <ul class="space-y-2">
+                                ${tasksListHTML}
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between">
+                        <span class="text-xs text-slate-400 font-mono">${member.tasks.length} key deliverables</span>
+                        <button onclick="openEditMemberModal(${member.id})" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-accent-50 hover:text-accent-700 transition flex items-center gap-1.5 cursor-pointer">
+                            <i data-lucide="pencil" class="w-3.5 h-3.5"></i>
+                            Edit Member
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+
+            renderMeta();
+            lucide.createIcons();
+        }
+
+        // ==========================================
+        // MODAL HANDLERS & INTERACTIVITY
+        // ==========================================
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
+        function openEditMemberModal(memberId) {
+            const member = appState.team.find(m => m.id === memberId);
+            if (!member) return;
+
+            document.getElementById('member-modal-title').textContent = 'Edit Team Member';
+            document.getElementById('member-id').value = member.id;
+            document.getElementById('member-name').value = member.name;
+            document.getElementById('member-role').value = member.role;
+            document.getElementById('member-status').value = member.status;
+            document.getElementById('member-tasks').value = member.tasks.join('\n');
+
+            document.getElementById('member-modal').classList.remove('hidden');
+        }
+
+        function openAddMemberModal() {
+            document.getElementById('member-modal-title').textContent = 'Add New Team Member';
+            document.getElementById('member-id').value = '';
+            document.getElementById('member-name').value = '';
+            document.getElementById('member-role').value = '';
+            document.getElementById('member-status').value = 'Active - On Track';
+            document.getElementById('member-tasks').value = '';
+
+            document.getElementById('member-modal').classList.remove('hidden');
+        }
+
+        function saveMember(e) {
+            e.preventDefault();
+            const idVal = document.getElementById('member-id').value;
+            const name = document.getElementById('member-name').value.trim();
+            const role = document.getElementById('member-role').value.trim();
+            const status = document.getElementById('member-status').value;
+            const tasks = document.getElementById('member-tasks').value
+                .split('\n')
+                .map(t => t.trim())
+                .filter(t => t.length > 0);
+
+            if (idVal) {
+                const idx = appState.team.findIndex(m => m.id === Number(idVal));
+                if (idx !== -1) {
+                    appState.team[idx] = { ...appState.team[idx], name, role, status, tasks };
+                    showToast('Team member updated successfully.');
+                }
+            } else {
+                appState.team.push({
+                    id: Date.now(),
+                    name,
+                    role,
+                    status,
+                    tasks
+                });
+                showToast('New team member added to roster.');
+            }
+
+            saveState();
+            renderTeam();
+            closeModal('member-modal');
+        }
+
+        function openAddPageModal() {
+            document.getElementById('page-title').value = '';
+            document.getElementById('page-route').value = '/modules/';
+            document.getElementById('page-owner').value = '';
+            document.getElementById('page-status').value = 'Planned';
+            document.getElementById('page-desc').value = '';
+            document.getElementById('page-modal').classList.remove('hidden');
+        }
+
+        function addSitemapPage(e) {
+            e.preventDefault();
+            const newPage = {
+                id: Date.now(),
+                title: document.getElementById('page-title').value.trim(),
+                route: document.getElementById('page-route').value.trim(),
+                owner: document.getElementById('page-owner').value.trim(),
+                status: document.getElementById('page-status').value,
+                description: document.getElementById('page-desc').value.trim()
+            };
+
+            appState.sitemap.push(newPage);
+            saveState();
+            renderSitemap();
+            closeModal('page-modal');
+            showToast('Page added to Site Map.');
+        }
+
+        function openEditOverviewModal() {
+            document.getElementById('edit-site-name').value = appState.meta.siteName;
+            document.getElementById('edit-hero-headline').value = appState.meta.heroTitle;
+            document.getElementById('edit-hero-sub').value = appState.meta.heroSubtitle;
+            document.getElementById('overview-modal').classList.remove('hidden');
+        }
+
+        function saveOverview(e) {
+            e.preventDefault();
+            appState.meta.siteName = document.getElementById('edit-site-name').value.trim();
+            appState.meta.heroTitle = document.getElementById('edit-hero-headline').value.trim();
+            appState.meta.heroSubtitle = document.getElementById('edit-hero-sub').value.trim();
+
+            saveState();
+            renderMeta();
+            closeModal('overview-modal');
+            showToast('Project overview updated.');
+        }
+
+        // ==========================================
+        // EXPORT STANDALONE HTML FOR GITHUB PAGES
+        // ==========================================
+        function downloadCustomizedHTML() {
+            // Grab current document HTML and inject current appState as defaultData
+            let docHTML = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+            const stateString = JSON.stringify(appState, null, 12);
+            docHTML = docHTML.replace(
+                /const defaultData = \{[\s\S]*?\n        \};/,
+                `const defaultData = ${stateString};`
+            );
+
+            const blob = new Blob([docHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'index.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('Downloaded customized index.html for GitHub Pages!');
+        }
+
+        // ==========================================
+        // UTILITIES
+        // ==========================================
+        function escapeHTML(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        function showToast(message) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-navy-900 text-white text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-lg border border-slate-700 flex items-center gap-2.5 transform transition-all duration-300 translate-y-2 opacity-0';
+            toast.innerHTML = `
+                <i data-lucide="check-circle" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+                <span>${escapeHTML(message)}</span>
+            `;
+            container.appendChild(toast);
+            lucide.createIcons();
+
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3200);
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderMeta();
+            renderSitemap();
+            renderTeam();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
